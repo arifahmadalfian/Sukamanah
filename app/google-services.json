@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "611147011734",
+    "project_id": "sukamanahproject-4fd68",
+    "storage_bucket": "sukamanahproject-4fd68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611147011734:android:494364a46ed103a57154b7",
+        "android_client_info": {
+          "package_name": "com.arifahmadalfian.sukamanah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611147011734-evcl0fi1cse2rh6qblcrips9e5jlv2ld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX2RHNU6OdCuE_fplmdfQ535eyo-rHCjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611147011734-evcl0fi1cse2rh6qblcrips9e5jlv2ld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
