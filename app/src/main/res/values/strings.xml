@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Sukamanah</string>
+    <string name="title_activity_menu_utama">MenuUtama</string>
+    <string name="title_home">Wishlist</string>
+    <string name="title_pengeluaran">Pengeluaran</string>
+    <string name="title_pemasukan">Pemasukan</string>
+    <string name="title_profil">Profil</string>
+    <string name="cancel">Batal</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Hapus</string>
+    <string name="delete_pet">Hapus Wishlist?</string>
+    <string name="delete_pets">Hapus semua wishlist terpilih?</string>
+
+    <string name="delete_pemasukan">Hapus Pemasukan</string>
+    <string name="delete_pemasukan_Selected">Hapus semua pemasukan terpilih?</string>
+
+    <string name="delete_pengeluaran">Hapus Pengeluaran</string>
+    <string name="delete_pengeluaran_Selected">Hapus semua pengeluaran terpilih?</string>
+
+    <string name="tentangapp">Tentang Aplikasi.</string>
 </resources>

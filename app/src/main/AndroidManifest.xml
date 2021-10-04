@@ -10,10 +10,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Sukamanah">
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.arifahmadalfian.sukamanah.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"
             android:exported="true">
+        </activity>
+        <activity
+            android:name="com.arifahmadalfian.sukamanah.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"
+            android:label="Daftar">
+        </activity>
+        <activity
+            android:name=".SplashscreenActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme2"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
