@@ -1,4 +1,4 @@
-package com.arifahmadalfian.sukamanah
+package com.arifahmadalfian.sukamanahkas
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

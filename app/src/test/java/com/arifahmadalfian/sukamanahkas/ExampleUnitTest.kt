@@ -1,4 +1,4 @@
-package com.arifahmadalfian.sukamanah
+package com.arifahmadalfian.sukamanahkas
 
 import org.junit.Test
 

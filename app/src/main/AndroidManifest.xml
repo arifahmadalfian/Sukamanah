@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arifahmadalfian.sukamanah">
+    package="com.arifahmadalfian.sukamanahkas">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -12,19 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.arifahmadalfian.sukamanah.LoginActivity"
+            android:name="com.arifahmadalfian.sukamanahkas.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"
             android:exported="true">
         </activity>
         <activity
-            android:name="com.arifahmadalfian.sukamanah.RegisterActivity"
+            android:name="com.arifahmadalfian.sukamanahkas.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"
             android:label="Daftar">
         </activity>
         <activity
-            android:name=".SplashscreenActivity"
+            android:name="com.arifahmadalfian.sukamanahkas.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"
+            android:label="Main">
+        </activity>
+        <activity
+            android:name="com.arifahmadalfian.sukamanahkas.SplashscreenActivity"
             android:exported="true"
             android:theme="@style/AppTheme2"
             android:screenOrientation="portrait">

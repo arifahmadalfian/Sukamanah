@@ -1,11 +1,11 @@
-package com.arifahmadalfian.sukamanah
+package com.arifahmadalfian.sukamanahkas
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
-import com.arifahmadalfian.sukamanah.databinding.ActivitySplashscreenBinding
+import com.arifahmadalfian.sukamanahkas.databinding.ActivitySplashscreenBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
