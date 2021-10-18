@@ -189,7 +189,7 @@ class RegisterActivity : AppCompatActivity() {
             "$uidImage.jpg",
             "0",
             "0",
-            "0")
+            false)
     }
 
     override fun onDestroy() {

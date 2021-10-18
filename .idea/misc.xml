@@ -3,19 +3,33 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable-v24/bg_logout.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable-v24/bg_search.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/bt_tabung_pengeluaran.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/bt_tabung_universal.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/button_selector.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_background_pemasukan.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_background_pengeluaran.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/custom_button.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/header_profile.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.11302083333333333" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_nabung.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_person_black_24dp.xml" value="0.1125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/login_layout.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/selector_item.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/state_list.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_main.xml" value="0.16802536231884058" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_register.xml" value="0.18206521739130435" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_splashscreen.xml" value="0.33" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/custom_loading.xml" value="0.17753623188405798" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_add.xml" value="0.20416666666666666" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_detail.xml" value="0.20416666666666666" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.25" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2203125" />
       </map>
