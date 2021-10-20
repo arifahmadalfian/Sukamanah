@@ -77,6 +77,11 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity() // or finish();
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

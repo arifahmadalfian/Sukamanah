@@ -22,7 +22,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/bg_logout"
-        android:src="@drawable/ic_baseline_exit_to_app_24"
+        android:src="@drawable/ic_menu"
+        app:layout_constraintBottom_toBottomOf="@+id/ivProfileHome"
         app:layout_constraintEnd_toEndOf="@+id/search_container"
         app:layout_constraintTop_toTopOf="@+id/ivProfileHome" />
 
@@ -78,6 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Search"
+            android:textColorHint="#9F000000"
             android:textSize="18sp"
             android:background="@drawable/bg_search"
             android:gravity="center_vertical"

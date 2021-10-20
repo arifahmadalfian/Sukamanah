@@ -23,13 +23,14 @@
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/selector_item.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/state_list.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_main.xml" value="0.16802536231884058" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_register.xml" value="0.18206521739130435" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_splashscreen.xml" value="0.33" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/custom_loading.xml" value="0.17753623188405798" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_add.xml" value="0.20416666666666666" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_detail.xml" value="0.20416666666666666" />
-        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/menu/popup_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.25" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2203125" />
       </map>

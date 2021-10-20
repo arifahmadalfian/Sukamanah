@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/actionSortHariIni"
+        android:title="Hari Ini"/>
+
+    <item android:id="@+id/actionSortMinggu"
+        android:title="1 Minggu"/>
+
+    <item android:id="@+id/actionSortBulan"
+        android:title="1 Bulan"/>
+
+    <item android:id="@+id/actionLogout"
+        android:title="Keluar"/>
+</menu>
