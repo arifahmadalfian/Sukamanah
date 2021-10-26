@@ -10,7 +10,10 @@ import android.graphics.drawable.ColorDrawable
 import android.text.TextUtils
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.arifahmadalfian.sukamanahkas.databinding.ActivityLoginBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
@@ -59,19 +62,23 @@ class LoginActivity : AppCompatActivity() {
                 return
             }
             else -> {
-                dialog.show()
-                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        Toast.makeText(this@LoginActivity, "Gagal Login", Toast.LENGTH_SHORT).show()
-                    } else {
-                        session.setLoggedin(true)
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                        finish()
+                lifecycleScope.launch {
+                    dialog.show()
+                    delay(1500)
+                    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Toast.makeText(this@LoginActivity, "Gagal Login", Toast.LENGTH_SHORT).show()
+                        } else {
+                            session.setLoggedin(true)
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                        }
+                        dialog.dismiss()
                     }
-                    dialog.dismiss()
                 }
+
             }
         }
 

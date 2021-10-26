@@ -17,6 +17,7 @@ import android.os.Build
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseUser
@@ -24,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -103,29 +106,30 @@ class RegisterActivity : AppCompatActivity() {
                 builder.setCancelable(false)
                 val dialog: AlertDialog = builder.create()
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                dialog.show()
-
-                email?.let { email ->
-                    password?.let { password ->
-                        auth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    sendEmailVerification()
-                                    task.result?.user?.let { onAuth(it) }
-                                    auth.signOut()
-                                } else {
-                                    Toast.makeText(
-                                        this@RegisterActivity,
-                                        "Gagal Mendaftar",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                lifecycleScope.launch {
+                    dialog.show()
+                    delay(1000)
+                    email?.let { email ->
+                        password?.let { password ->
+                            auth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        sendEmailVerification()
+                                        task.result?.user?.let { onAuth(it) }
+                                        auth.signOut()
+                                    } else {
+                                        Toast.makeText(
+                                            this@RegisterActivity,
+                                            "Gagal Mendaftar",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    dialog.dismiss()
                                 }
-                                dialog.dismiss()
-                            }
+                        }
+
                     }
-
                 }
-
 
             }
         }

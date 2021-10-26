@@ -1,5 +1,7 @@
 package com.arifahmadalfian.sukamanahkas.fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -70,11 +72,22 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
                 return true
             }
             R.id.actionLogout -> {
-                session.setLoggedin(false)
-                FirebaseAuth.getInstance().signOut()
-                HomeFragmentDirections.actionHomeFragmentToLoginActivity().also {
-                    findNavController().navigate(it)
-                }
+                AlertDialog.Builder(requireContext())
+                    .setIcon(R.drawable.rw)
+                    .setTitle("Keluar")
+                    .setMessage("Apakah anda yakin ingin keluar!")
+                    .setPositiveButton("OK") { _, _ ->
+                        session.setLoggedin(false)
+                        FirebaseAuth.getInstance().signOut()
+                        HomeFragmentDirections.actionHomeFragmentToLoginActivity().also {
+                            findNavController().navigate(it)
+                        }
+
+                    }
+                    .setNegativeButton("Cancel") { dialog, _ ->
+                        dialog.cancel()
+                    }
+                    .show()
                 return true
             }
             else -> {
