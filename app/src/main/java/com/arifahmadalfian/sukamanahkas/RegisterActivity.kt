@@ -10,23 +10,30 @@ import android.text.TextUtils
 import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.ActivityRegisterBinding
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -39,7 +46,8 @@ class RegisterActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
-    private var mainImageURI: Uri? = null
+    private var urlImage: String? = null
+    private var uuid: String? = null
 
     private lateinit var storageReference: StorageReference
     private lateinit var firestore: FirebaseFirestore
@@ -160,40 +168,21 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun onAuth(user: FirebaseUser) {
         createAnewUser(user.uid)
-
     }
 
     private fun createAnewUser(uid: String) {
-        val imagePath = storageReference.child("$uid.jpg")
-        var downUri: Uri? = null
-        mainImageURI?.let {
-            imagePath.putFile(it).continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    throw task.exception!!
-                }
-                imagePath.downloadUrl
-            }.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    downUri = task.result
-                } else {
-                    val ERROR = task.exception?.message
-                    Toast.makeText(this@RegisterActivity, ERROR, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-        val user: User = buildNewuser(uid)
-        databaseReference.child(uid).setValue(user)
-    }
-
-    private fun buildNewuser(uidImage: String): User {
-        return User(
+        val image: String? = urlImage
+        val user = User(
+            uid,
             namalengkap,
             password,
             email,
-            "$uidImage.jpg",
+            "$image",
+            "$uuid",
             "0",
             "0",
             false)
+        databaseReference.child(uid).setValue(user)
     }
 
     override fun onDestroy() {
@@ -205,8 +194,27 @@ class RegisterActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST) {
             if (resultCode == RESULT_OK) {
-                mainImageURI = data?.data
-                binding?.imgProfile?.setImageURI(mainImageURI)
+                uuid = UUID.randomUUID().toString()
+                val imagePath = storageReference.child("images/$uuid")
+                data?.data?.let {
+                    binding?.pbLoading?.visibility = View.VISIBLE
+                    imagePath.putFile(it).continueWithTask { task ->
+                        if (!task.isSuccessful) {
+                            throw task.exception!!
+                        }
+                        imagePath.downloadUrl
+                    }.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            urlImage = task.result.toString()
+                            binding?.imgProfile?.setImageURI(it)
+                        } else {
+                            val error = task.exception?.message
+                            Toast.makeText(this@RegisterActivity, error, Toast.LENGTH_SHORT).show()
+                        }
+                        binding?.pbLoading?.visibility = View.GONE
+                    }
+                }
+
             } else if (resultCode == FUCK_UP) {
                 Toast.makeText(this, "Gagal Memilih Profile", Toast.LENGTH_SHORT).show()
             }
