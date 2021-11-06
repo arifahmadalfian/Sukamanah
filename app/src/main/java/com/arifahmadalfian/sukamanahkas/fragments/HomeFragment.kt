@@ -1,13 +1,13 @@
 package com.arifahmadalfian.sukamanahkas.fragments
 
 import android.app.AlertDialog
-import android.net.Uri
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.annotation.NonNull
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
 import coil.load
@@ -16,15 +16,12 @@ import com.arifahmadalfian.sukamanahkas.R
 import com.arifahmadalfian.sukamanahkas.Session
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
 
@@ -32,6 +29,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
     private val binding get() = _binding
 
     private lateinit var userData: User
+    private var admin = "false"
 
     private lateinit var session: Session
     private lateinit var mAuth: FirebaseAuth
@@ -60,45 +58,54 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
     }
 
     private fun initView() {
+        // Menunggu semua data sudah terambil
+        val builder: androidx.appcompat.app.AlertDialog.Builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        builder.setView(layoutInflater.inflate(R.layout.custom_loading, null))
+        builder.setCancelable(false)
+        val dialog: androidx.appcompat.app.AlertDialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
+
         val user = mAuth.currentUser?.uid
-        var imageUser = ""
+        var imageUser = "null"
         val eventListener: ValueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val data = mutableListOf<Any>()
                 for (ds in dataSnapshot.children) {
                     ds.getValue(Any::class.java)?.let { data.add(it) }
                 }
-                imageUser = "${data[4]}"
+                imageUser = "${data[5]}"
+                binding?.ivProfileHome?.load(imageUser) {
+                    placeholder(R.drawable.ic_placeholder)
+                    error(R.drawable.ic_placeholder)
+                    crossfade(true)
+                    crossfade(400)
+                    transformations(RoundedCornersTransformation(10f))
+                }
+                admin = "${data[0]}"
+                /**
+                 * setting name profile & isAdmin
+                 */
+                binding?.tvName?.text = "${data[3]}"
+                dialog.dismiss()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
         }
         val imageProfile = mDatabase.reference.child("Users").child("$user")
         imageProfile.addListenerForSingleValueEvent(eventListener)
-        Log.d("userData","$imageUser")
 
+        /**
+         * setting image null
+         */
+        binding?.ivProfileHome?.load("https://firebasestorage.googleapis.com/v0/b/sukamanah-ccbf0.appspot.com/o/images%2Fblue_image.png?alt=media&token=76aaf1c0-a04a-4365-a7e4-69cbf9986f40") {
+            placeholder(R.drawable.ic_placeholder)
+            error(R.drawable.ic_placeholder)
+            crossfade(true)
+            crossfade(400)
+            transformations(RoundedCornersTransformation(10f))
+        }
 
-
-
-//
-//        if (user != null) {
-//            binding?.ivProfileHome?.load("$profile") {
-//                placeholder(R.drawable.ic_placeholder)
-//                error(R.drawable.ic_placeholder)
-//                crossfade(true)
-//                crossfade(400)
-//                transformations(RoundedCornersTransformation(100f))
-//            }
-//
-//        } else {
-//            binding?.ivProfileHome?.load("https://firebasestorage.googleapis.com/v0/b/sukamanah-ccbf0.appspot.com/o/images%2Fblue_image.png?alt=media&token=c820dc0a-b77c-4dd9-a315-8ef8b9053c12") {
-//                placeholder(R.drawable.ic_placeholder)
-//                error(R.drawable.ic_placeholder)
-//                crossfade(true)
-//                crossfade(400)
-//                transformations(RoundedCornersTransformation(100f))
-//            }
-//        }
     }
 
     private fun showPopupMenu(v: View) {

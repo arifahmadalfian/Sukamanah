@@ -173,15 +173,16 @@ class RegisterActivity : AppCompatActivity() {
     private fun createAnewUser(uid: String) {
         val image: String? = urlImage
         val user = User(
-            uid,
-            namalengkap,
-            password,
-            email,
-            "$image",
-            "$uuid",
-            "0",
-            "0",
-            false)
+            admin = "false",
+            emailUser = email,
+            id = uid,
+            namaUser = namalengkap,
+            passUser = password,
+            profileUser= "$image",
+            profileUserUid = "$uuid",
+            saldoPemasukan= "0",
+            saldoTotal = "0"
+        )
         databaseReference.child(uid).setValue(user)
     }
 
