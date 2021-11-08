@@ -87,4 +87,7 @@ dependencies {
 
     //coil
     implementation "io.coil-kt:coil:1.4.0"
+
+    //capitalize
+    implementation 'org.apache.commons:commons-text:1.7'
 }

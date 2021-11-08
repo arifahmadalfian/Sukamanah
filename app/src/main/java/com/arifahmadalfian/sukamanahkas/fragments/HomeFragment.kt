@@ -9,6 +9,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -16,6 +17,8 @@ import com.arifahmadalfian.sukamanahkas.R
 import com.arifahmadalfian.sukamanahkas.Session
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
+import com.arifahmadalfian.sukamanahkas.utils.toCapitalize
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -84,9 +87,17 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
                 }
                 admin = "${data[0]}"
                 /**
+                 * hak akses admin untuk menambahkan data
+                 */
+                if (admin == "false") {
+                    binding?.fabAdd?.visibility = View.GONE
+                } else {
+                    binding?.fabAdd?.visibility = View.VISIBLE
+                }
+                /**
                  * setting name profile & isAdmin
                  */
-                binding?.tvName?.text = "${data[3]}"
+                binding?.tvName?.text = data[3].toString().toCapitalize()
                 dialog.dismiss()
             }
 
@@ -104,6 +115,10 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
             crossfade(true)
             crossfade(400)
             transformations(RoundedCornersTransformation(10f))
+        }
+
+        binding?.fabAdd?.setOnClickListener {
+            showBottomSheetAdd()
         }
 
     }
@@ -157,6 +172,13 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
             else -> {
                 return false
             }
+        }
+    }
+
+    private fun showBottomSheetAdd() {
+        val bottomSheet: com.arifahmadalfian.sukamanahkas.fragments.BottomSheetDialog = BottomSheetDialog()
+        fragmentManager?.let {
+            bottomSheet.show(it, "bottomsheet")
         }
     }
 
