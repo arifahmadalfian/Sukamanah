@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/card_background_pemasukan"
@@ -28,14 +29,55 @@
         app:lottie_fileName="money_added.json"
         app:lottie_loop="true" />
 
-    <EditText
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="25sp"
+    <AutoCompleteTextView
+        android:id="@+id/atCari"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text=""
+        android:paddingStart="16dp"
+        android:hint="Cari"
+        android:background="@drawable/bg_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView" />
+        app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView"
+        tools:ignore="LabelFor,RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/et_jumlah"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_search"
+        android:ems="10"
+        android:fontFamily="@font/product_sans_regular"
+        android:hint="Input Pemasukan"
+        android:inputType="number"
+        android:maxLines="1"
+        android:padding="15dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="@+id/atCari"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/atCari"
+        app:layout_constraintTop_toBottomOf="@+id/atCari" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="320dp"
+        android:fontFamily="@font/product_sans_bold"
+        android:lineSpacingExtra="4sp"
+        android:text="Tambah"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/et_jumlah"
+        app:layout_constraintStart_toStartOf="@+id/et_jumlah"
+        app:layout_constraintTop_toBottomOf="@+id/et_jumlah" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

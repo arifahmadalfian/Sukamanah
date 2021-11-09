@@ -1,6 +1,7 @@
 package com.arifahmadalfian.sukamanahkas.fragments
 
 import android.app.AlertDialog
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.arifahmadalfian.sukamanahkas.Session
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
 import com.arifahmadalfian.sukamanahkas.utils.toCapitalize
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -178,8 +180,15 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
     private fun showBottomSheetAdd() {
         val bottomSheet: com.arifahmadalfian.sukamanahkas.fragments.BottomSheetDialog = BottomSheetDialog()
         fragmentManager?.let {
+            setupFullHeight(requireView())
             bottomSheet.show(it, "bottomsheet")
         }
+    }
+
+    private fun setupFullHeight(bottomSheet: View) {
+        val layoutParams = bottomSheet.layoutParams
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        bottomSheet.layoutParams = layoutParams
     }
 
 }

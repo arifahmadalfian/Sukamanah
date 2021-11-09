@@ -43,3 +43,8 @@ fun String.toCapitalize(): String {
     return WordUtils.capitalizeFully(this).replace("-", " ")
 }
 
+fun Long.numberToCurrency(): String {
+    val formatter = NumberFormat.getNumberInstance(Locale.GERMANY)
+    return formatter.format(this)
+}
+
