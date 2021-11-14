@@ -35,6 +35,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
 
     private lateinit var userData: User
     private var admin = "false"
+    private var createBy = ""
 
     private lateinit var session: Session
     private lateinit var mAuth: FirebaseAuth
@@ -87,6 +88,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
                     crossfade(400)
                     transformations(RoundedCornersTransformation(10f))
                 }
+                createBy = "${data[3]}"
                 admin = "${data[0]}"
                 /**
                  * hak akses admin untuk menambahkan data
@@ -178,7 +180,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
     }
 
     private fun showBottomSheetAdd() {
-        val bottomSheet: com.arifahmadalfian.sukamanahkas.fragments.BottomSheetDialog = BottomSheetDialog()
+        val bottomSheet: com.arifahmadalfian.sukamanahkas.fragments.BottomSheetDialog = BottomSheetDialog(createBy)
         fragmentManager?.let {
             setupFullHeight(requireView())
             bottomSheet.show(it, "bottomsheet")

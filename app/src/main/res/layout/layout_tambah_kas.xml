@@ -74,6 +74,7 @@
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:textStyle="normal"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/et_jumlah"
         app:layout_constraintStart_toStartOf="@+id/et_jumlah"
