@@ -10,15 +10,17 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.arifahmadalfian.sukamanahkas.R
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.LayoutTambahKasBinding
 import com.arifahmadalfian.sukamanahkas.utils.numberToCurrency
+import com.arifahmadalfian.sukamanahkas.utils.showToast
 import com.arifahmadalfian.sukamanahkas.utils.todayTimeInMillis
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
@@ -28,7 +30,7 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
 
     private var currentEditTextAmount: String = "0"
     private lateinit var database: DatabaseReference
-    private lateinit var mDatabase: DatabaseReference
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var search: AutoCompleteTextView
     private val users = ArrayList<User>()
 
@@ -44,6 +46,7 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         database = FirebaseDatabase.getInstance().getReference("Users")
+        firestore = FirebaseFirestore.getInstance()
         search = binding.atCari
 
         val event = object: ValueEventListener {
@@ -116,15 +119,12 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
                     binding.etJumlah.error = "Input Pemasukan"
                 }
                 else -> {
-                    val today = todayTimeInMillis
-                    val create = createBy
-                    val saldo = "${users[0].saldoTotal}"
-                    val jumlah = binding.etJumlah.text.toString().replace(".", "")
-                    val saldoAhir = saldo.toInt() + jumlah.toInt()
-                    val id = "${users[0].id}"
-                    database.child(id).child("saldoTotal").setValue("$saldoAhir")
-
-                    this.dismiss()
+                    lifecycleScope.launch {
+                        delay(1000)
+                        binding.lottieAnimationViewLoading.visibility = View.VISIBLE
+                        binding.lottieAnimationView.visibility = View.GONE
+                        addFirestore()
+                    }
                 }
             }
         }
@@ -158,6 +158,30 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
                 }
             }
         })
+    }
+
+    private fun addFirestore() {
+        val saldo = "${users[0].saldoTotal}"
+        val saldoAhir = saldo.toInt() + binding.etJumlah.text.toString().replace(".", "").toInt()
+        val id = "${users[0].id}"
+
+        /**Add Firestore*/
+        val kas: MutableMap<String, String> = mutableMapOf()
+        kas["id"] = id
+        kas["name"] = "${users[0].namaUser}"
+        kas["profile"] = "${users[0].profileUserUid}"
+        kas["inclusion"] = binding.etJumlah.text.toString()
+        kas["createAt"] = todayTimeInMillis
+        kas["createBy"] = createBy
+        firestore.collection("Kas").add(kas).addOnSuccessListener {
+            /**Update database*/
+            database.child(id).child("saldoTotal").setValue("$saldoAhir")
+            showToast(requireContext(), "Berhasil")
+            this.dismiss()
+        }.addOnFailureListener {
+            showToast(requireContext(), "Gagal")
+            this.dismiss()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

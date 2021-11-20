@@ -1,7 +1,9 @@
 package com.arifahmadalfian.sukamanahkas.utils
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.text.format.DateFormat
+import android.widget.Toast
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,5 +49,9 @@ fun String.toCapitalize(): String {
 fun Long.numberToCurrency(): String {
     val formatter = NumberFormat.getNumberInstance(Locale.GERMANY)
     return formatter.format(this)
+}
+
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 

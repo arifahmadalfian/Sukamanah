@@ -16,7 +16,8 @@
         android:layout_marginTop="16dp"
         android:src="@drawable/profile_blank"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Profile" />
 
     <ImageButton
         android:id="@+id/btnLogout"
@@ -26,7 +27,8 @@
         android:src="@drawable/ic_menu"
         app:layout_constraintBottom_toBottomOf="@+id/ivProfileHome"
         app:layout_constraintEnd_toEndOf="@+id/search_container"
-        app:layout_constraintTop_toTopOf="@+id/ivProfileHome" />
+        app:layout_constraintTop_toTopOf="@+id/ivProfileHome"
+        android:contentDescription="Menu" />
 
     <ImageButton
         android:id="@+id/btnPrint"
@@ -35,9 +37,24 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/bg_logout"
         android:src="@drawable/ic_baseline_print_24"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/btnLogout"
         app:layout_constraintEnd_toStartOf="@+id/btnLogout"
-        app:layout_constraintTop_toTopOf="@+id/btnLogout" />
+        app:layout_constraintTop_toTopOf="@+id/btnLogout"
+        android:contentDescription="Print" />
+
+    <ImageButton
+        android:id="@+id/btnShowQr"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_logout"
+        android:src="@drawable/ic_baseline_qr_code"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLogout"
+        app:layout_constraintEnd_toStartOf="@+id/btnLogout"
+        app:layout_constraintTop_toTopOf="@+id/btnLogout"
+        android:contentDescription="Qr Code" />
 
     <TextView
         android:id="@+id/tvName"
