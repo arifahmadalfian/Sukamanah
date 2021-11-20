@@ -7,17 +7,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import org.apache.commons.text.WordUtils
 
-@SuppressLint("SimpleDateFormat")
-fun Long.epochToDateTime(): String {
-    val date = Date(this * 1000L)
-    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS")
-    return sdf.format(date)
-}
+const val DAY = "EEEE"
+const val HOURS = "HH:mm"
+const val DMY = "d MM yyyy"
+const val HDMY = "EEEE, HH:mm dd MMM yy"
+
+val todayTimeInMillis : String
+    get() = Calendar.getInstance().timeInMillis.toString()
 
 @SuppressLint("SimpleDateFormat")
-fun Long.epochToDay(): String {
-    val date = Date(this * 1000L)
-    val sdf = SimpleDateFormat("EEEE, d MMM yyyy HH:mm")
+fun Long.epochToDateTime(format: String = "dd MM yyyy"): String {
+    val date = Date( this)
+    val sdf = SimpleDateFormat(format)
     return sdf.format(date)
 }
 

@@ -18,7 +18,10 @@ import com.arifahmadalfian.sukamanahkas.R
 import com.arifahmadalfian.sukamanahkas.Session
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
+import com.arifahmadalfian.sukamanahkas.utils.HDMY
+import com.arifahmadalfian.sukamanahkas.utils.epochToDateTime
 import com.arifahmadalfian.sukamanahkas.utils.toCapitalize
+import com.arifahmadalfian.sukamanahkas.utils.todayTimeInMillis
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -95,8 +98,10 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
                  */
                 if (admin == "false") {
                     binding?.fabAdd?.visibility = View.GONE
+                    binding?.btnPrint?.visibility = View.GONE
                 } else {
                     binding?.fabAdd?.visibility = View.VISIBLE
+                    binding?.btnPrint?.visibility = View.VISIBLE
                 }
                 /**
                  * setting name profile & isAdmin
@@ -124,6 +129,12 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
         binding?.fabAdd?.setOnClickListener {
             showBottomSheetAdd()
         }
+
+        binding?.fabAdd?.setOnLongClickListener {
+            Toast.makeText(requireContext(), todayTimeInMillis.toLong().epochToDateTime(HDMY), Toast.LENGTH_SHORT).show()
+            true
+        }
+
 
     }
 

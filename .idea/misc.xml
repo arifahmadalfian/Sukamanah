@@ -22,8 +22,10 @@
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_print_24.xml" value="0.1" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.11302083333333333" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_menu.xml" value="0.1" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_nabung.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_person.xml" value="0.11302083333333333" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_person_black_24dp.xml" value="0.1125" />
@@ -39,7 +41,7 @@
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/custom_loading.xml" value="0.17753623188405798" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_add.xml" value="0.20416666666666666" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_detail.xml" value="0.20416666666666666" />
-        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/layout_tambah_kas.xml" value="0.25" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/list_pemasukan.xml" value="0.25" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/menu/popup_menu.xml" value="0.20416666666666666" />

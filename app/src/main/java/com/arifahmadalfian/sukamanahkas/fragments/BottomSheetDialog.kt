@@ -16,17 +16,19 @@ import com.arifahmadalfian.sukamanahkas.R
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.LayoutTambahKasBinding
 import com.arifahmadalfian.sukamanahkas.utils.numberToCurrency
+import com.arifahmadalfian.sukamanahkas.utils.todayTimeInMillis
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.*
 import kotlinx.coroutines.launch
 
-class BottomSheetDialog(createBy: String) : BottomSheetDialogFragment() {
+class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
 
     private var _binding: LayoutTambahKasBinding? = null
     private val binding get() = _binding!!
 
     private var currentEditTextAmount: String = "0"
     private lateinit var database: DatabaseReference
+    private lateinit var mDatabase: DatabaseReference
     private lateinit var search: AutoCompleteTextView
     private val users = ArrayList<User>()
 
@@ -114,14 +116,23 @@ class BottomSheetDialog(createBy: String) : BottomSheetDialogFragment() {
                     binding.etJumlah.error = "Input Pemasukan"
                 }
                 else -> {
-                    Toast.makeText(requireContext(),"$users", Toast.LENGTH_SHORT).show()
+                    val today = todayTimeInMillis
+                    val create = createBy
+                    val saldo = "${users[0].saldoTotal}"
+                    val jumlah = binding.etJumlah.text.toString().replace(".", "")
+                    val saldoAhir = saldo.toInt() + jumlah.toInt()
+                    val id = "${users[0].id}"
+                    database.child(id).child("saldoTotal").setValue("$saldoAhir")
+
+                    this.dismiss()
                 }
             }
         }
+
         binding.ivClose.setOnClickListener {
             this.dismiss()
         }
-        //binding.btnSave.setBackgroundColor(resources.getColor(R.color.biru))
+
         binding.etJumlah.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {}
@@ -151,7 +162,7 @@ class BottomSheetDialog(createBy: String) : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, com.arifahmadalfian.sukamanahkas.R.style.CustomBottomSheetDialogTheme)
+        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
     }
 
 }
