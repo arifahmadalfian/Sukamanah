@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
@@ -56,6 +57,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
         mAuth = FirebaseAuth.getInstance()
         mStorage = FirebaseStorage.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
         userData = User()
         binding?.btnLogout?.setOnClickListener {
             showPopupMenu(it)

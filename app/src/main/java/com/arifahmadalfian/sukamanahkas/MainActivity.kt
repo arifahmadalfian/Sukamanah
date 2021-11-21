@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.arifahmadalfian.sukamanahkas.databinding.ActivityMainBinding
+import com.arifahmadalfian.sukamanahkas.utils.TOPIC
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -15,6 +17,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+//        FirebaseService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+//        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+//            FirebaseService.token = it.token
+//            etToken.setText(it.token)
+//        }
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         val navController = navHostFragment.navController

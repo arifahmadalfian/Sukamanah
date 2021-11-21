@@ -14,6 +14,12 @@ const val HOURS = "HH:mm"
 const val DMY = "d MM yyyy"
 const val HDMY = "EEEE, HH:mm dd MMM yy"
 
+const val BASE_URL = "https://fcm.googleapis.com"
+const val SERVER_KEY = "AAAAivpj5C4:APA91bHufEMq3lWrqhsfVyZ6reDqUi64OEyb3-SASBy_WQ5MUtyEw0aP8xkBBnMAI_tMKZnO0u1Km2LJgnoDUdClaECZo7-xJxl-Pa0U88txl-DIztC1Apd6Iv6AucprQ8KxFTu9jqYq"
+const val CONTENT_TYPE = "application/json"
+const val TOPIC = "/topics/myTopic2"
+const val CHANNEL_ID = "my_channel"
+
 val todayTimeInMillis : String
     get() = Calendar.getInstance().timeInMillis.toString()
 

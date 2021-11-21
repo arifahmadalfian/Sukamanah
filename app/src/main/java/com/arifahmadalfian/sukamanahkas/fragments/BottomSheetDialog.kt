@@ -12,14 +12,20 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.lifecycle.lifecycleScope
 import com.arifahmadalfian.sukamanahkas.R
+import com.arifahmadalfian.sukamanahkas.data.model.NotificationData
+import com.arifahmadalfian.sukamanahkas.data.model.PushNotification
 import com.arifahmadalfian.sukamanahkas.data.model.User
+import com.arifahmadalfian.sukamanahkas.data.retrofit.RetrofitInstance
 import com.arifahmadalfian.sukamanahkas.databinding.LayoutTambahKasBinding
-import com.arifahmadalfian.sukamanahkas.utils.numberToCurrency
-import com.arifahmadalfian.sukamanahkas.utils.showToast
-import com.arifahmadalfian.sukamanahkas.utils.todayTimeInMillis
+import com.arifahmadalfian.sukamanahkas.utils.*
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -34,6 +40,8 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
     private lateinit var search: AutoCompleteTextView
     private val users = ArrayList<User>()
 
+    val TAG = "MainActivity"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +55,7 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         database = FirebaseDatabase.getInstance().getReference("Users")
         firestore = FirebaseFirestore.getInstance()
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
         search = binding.atCari
 
         val event = object: ValueEventListener {
@@ -176,11 +185,30 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
         firestore.collection("Kas").add(kas).addOnSuccessListener {
             /**Update database*/
             database.child(id).child("saldoTotal").setValue("$saldoAhir")
+            PushNotification(
+                NotificationData("${users[0].namaUser?.toCapitalize()}", "Pembayaran kas ${binding.etJumlah.text.toString()}" ),
+                TOPIC
+            ).also {
+                sendNotification(it)
+            }
             showToast(requireContext(), "Berhasil")
             this.dismiss()
         }.addOnFailureListener {
             showToast(requireContext(), "Gagal")
             this.dismiss()
+        }
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e(TAG, response.errorBody().toString())
+            }
+        } catch(e: Exception) {
+            Log.e(TAG, e.toString())
         }
     }
 
