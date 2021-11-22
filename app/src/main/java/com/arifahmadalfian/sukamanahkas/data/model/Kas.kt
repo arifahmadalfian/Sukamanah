@@ -5,10 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Kas(
+    val createAt: String,
+    val createBy: String,
+    val inclusion: String,
     val id: String,
     val name: String,
     val profile: String,
-    val inclusion: String,
-    val createAt: String,
-    val createBy: String
 ): Parcelable

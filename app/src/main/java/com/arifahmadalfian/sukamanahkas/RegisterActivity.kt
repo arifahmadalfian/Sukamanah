@@ -196,7 +196,7 @@ class RegisterActivity : AppCompatActivity() {
         if (requestCode == REQUEST) {
             if (resultCode == RESULT_OK) {
                 uuid = UUID.randomUUID().toString()
-                val imagePath = storageReference.child("images/$uuid")
+                val imagePath = storageReference.child("images/$uuid.jpeg")
                 data?.data?.let {
                     binding?.pbLoading?.visibility = View.VISIBLE
                     imagePath.putFile(it).continueWithTask { task ->

@@ -12,7 +12,8 @@ import org.apache.commons.text.WordUtils
 const val DAY = "EEEE"
 const val HOURS = "HH:mm"
 const val DMY = "d MM yyyy"
-const val HDMY = "EEEE, HH:mm dd MMM yy"
+const val HHDMY = "EEEE, HH:mm dd MMM yy"
+const val HDMY = "HH:mm dd MMM yy"
 
 const val BASE_URL = "https://fcm.googleapis.com"
 const val SERVER_KEY = "AAAAivpj5C4:APA91bHufEMq3lWrqhsfVyZ6reDqUi64OEyb3-SASBy_WQ5MUtyEw0aP8xkBBnMAI_tMKZnO0u1Km2LJgnoDUdClaECZo7-xJxl-Pa0U88txl-DIztC1Apd6Iv6AucprQ8KxFTu9jqYq"

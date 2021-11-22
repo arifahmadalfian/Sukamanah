@@ -1,35 +1,37 @@
 package com.arifahmadalfian.sukamanahkas.fragments
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.arifahmadalfian.sukamanahkas.HomeAdapter
+import com.arifahmadalfian.sukamanahkas.IOnKasItemsClickListener
 import com.arifahmadalfian.sukamanahkas.R
 import com.arifahmadalfian.sukamanahkas.Session
+import com.arifahmadalfian.sukamanahkas.data.model.Kas
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
 import com.arifahmadalfian.sukamanahkas.utils.*
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.storage.FirebaseStorage
 
-class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
+class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
@@ -37,10 +39,11 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
     private lateinit var userData: User
     private var admin = "false"
     private var createBy = ""
+    private lateinit var homeAdapter: HomeAdapter
+    private val listKas: ArrayList<Kas> = ArrayList()
 
     private lateinit var session: Session
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var mStorage: FirebaseStorage
     private lateinit var mDatabase: FirebaseDatabase
 
     override fun onCreateView(
@@ -55,7 +58,6 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         session = Session(requireContext())
         mAuth = FirebaseAuth.getInstance()
-        mStorage = FirebaseStorage.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
         userData = User()
@@ -104,6 +106,12 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
                     binding?.btnPrint?.visibility = View.VISIBLE
                     binding?.btnShowQr?.visibility = View.GONE
                 }
+
+                /**
+                 * pengambilan data firestore setelah pengambilan datastore beres
+                 */
+                getDataKas()
+
                 /**
                  * setting name profile & isAdmin
                  */
@@ -144,6 +152,40 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
             showToast(requireContext(), "Coming Soon")
         }
 
+        homeAdapter = HomeAdapter(this)
+        binding?.rvItemKas?.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = homeAdapter
+            setHasFixedSize(true)
+        }
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getDataKas() {
+        FirebaseFirestore.getInstance().collection("Kas")
+            .orderBy("createAt", Query.Direction.DESCENDING)
+            .addSnapshotListener {value, error ->
+            if (error != null) {
+                showToast(requireContext(), "Error")
+                return@addSnapshotListener
+            }
+            for (dc: DocumentChange in value?.documentChanges!!) {
+                if (dc.type == DocumentChange.Type.ADDED) {
+                    val kas = Kas(
+                        dc.document.get("createAt").toString(),
+                        dc.document.get("createBy").toString(),
+                        dc.document.get("inclusion").toString(),
+                        dc.document.get("id").toString(),
+                        dc.document.get("name").toString(),
+                        dc.document.get("profile").toString(),
+                    )
+                    listKas.add(kas)
+                }
+            }
+            homeAdapter.setUser(listKas)
+            homeAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun showPopupMenu(v: View) {
@@ -210,6 +252,10 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
         val layoutParams = bottomSheet.layoutParams
         layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
         bottomSheet.layoutParams = layoutParams
+    }
+
+    override fun onKasItemClickListener(kas: Kas, position: Int) {
+        Toast.makeText(requireContext(), "Coming soon", Toast.LENGTH_SHORT).show()
     }
 
 }

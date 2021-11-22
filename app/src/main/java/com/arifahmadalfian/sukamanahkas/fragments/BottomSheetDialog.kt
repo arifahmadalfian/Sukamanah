@@ -178,7 +178,7 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
         val kas: MutableMap<String, String> = mutableMapOf()
         kas["id"] = id
         kas["name"] = "${users[0].namaUser}"
-        kas["profile"] = "${users[0].profileUserUid}"
+        kas["profile"] = "${users[0].profileUser}"
         kas["inclusion"] = binding.etJumlah.text.toString()
         kas["createAt"] = todayTimeInMillis
         kas["createBy"] = createBy
