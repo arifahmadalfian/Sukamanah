@@ -841,3 +841,29 @@ fun showToast(context: Context, message: String) {
 //     //zxing barcode
 //     implementation 'com.google.zxing:core:3.3.0'
 //     implementation 'com.journeyapps:zxing-android-embedded:3.5.0@aar'
+            
+            //Image circular loading
+
+//  holder.productImage.loadImage(
+//             item.product_images,
+//             getProgressDrawable(holder.productImage.context)
+//         )
+// fun getProgressDrawable(context: Context): CircularProgressDrawable {
+
+//     return CircularProgressDrawable(context).apply {
+//         strokeWidth = 10f
+//         centerRadius = 50f
+//         start()
+//     }
+// }
+
+// fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable) {
+//     val option = RequestOptions()
+//         .placeholder(progressDrawable)
+//         .error(R.drawable.img_error_wrong)
+
+//     Glide.with(context)
+//         .setDefaultRequestOptions(option)
+//         .load(uri)
+//         .into(this)
+// }
