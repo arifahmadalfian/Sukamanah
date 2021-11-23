@@ -69,6 +69,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_email_login" />
 
+    <ImageView
+        android:id="@+id/password_show"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/show_password"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/et_password_login"
+        app:layout_constraintEnd_toEndOf="@+id/et_password_login"
+        app:layout_constraintTop_toTopOf="@+id/et_password_login" />
+
+    <ImageView
+        android:id="@+id/password_hide"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/hide_password"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/et_password_login"
+        app:layout_constraintEnd_toEndOf="@+id/et_password_login"
+        app:layout_constraintTop_toTopOf="@+id/et_password_login" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl"
         android:layout_width="wrap_content"

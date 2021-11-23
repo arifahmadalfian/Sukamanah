@@ -109,19 +109,19 @@ fun showToast(context: Context, message: String) {
 
 //     }
 
-fun getBitmap(drawableRes: Int, context: Context): Bitmap? {
-    val drawable: Drawable = ContextCompat.getDrawable(context, drawableRes)!!
-    val canvas = Canvas()
-    val bitmap = Bitmap.createBitmap(
-        drawable.intrinsicWidth,
-        drawable.intrinsicHeight,
-        Bitmap.Config.ARGB_8888
-    )
-    canvas.setBitmap(bitmap)
-    drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-    drawable.draw(canvas)
-    return bitmap
-}
+//fun getBitmap(drawableRes: Int, context: Context): Bitmap? {
+//    val drawable: Drawable = ContextCompat.getDrawable(context, drawableRes)!!
+//    val canvas = Canvas()
+//    val bitmap = Bitmap.createBitmap(
+//        drawable.intrinsicWidth,
+//        drawable.intrinsicHeight,
+//        Bitmap.Config.ARGB_8888
+//    )
+//    canvas.setBitmap(bitmap)
+//    drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+//    drawable.draw(canvas)
+//    return bitmap
+//}
 
 // import android.graphics.Bitmap;
 // import android.graphics.Canvas;

@@ -15,6 +15,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -89,6 +91,19 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+
+        binding?.passwordHide?.setOnClickListener {
+            it.visibility = View.GONE
+            binding?.passwordShow?.visibility = View.VISIBLE
+            binding?.etPasswordRegis?.transformationMethod = HideReturnsTransformationMethod.getInstance()
+        }
+
+        binding?.passwordShow?.setOnClickListener {
+            it.visibility = View.GONE
+            binding?.passwordHide?.visibility = View.VISIBLE
+            binding?.etPasswordRegis?.transformationMethod = PasswordTransformationMethod.getInstance()
+        }
+
         binding?.btRegister?.setOnClickListener {
             namalengkap = binding?.etNamaRegis?.text.toString().trim()
             password = binding?.etPasswordRegis?.text?.toString()?.trim()
@@ -106,6 +121,12 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(
                     this@RegisterActivity,
                     "Password kurang dari 6 digit",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (urlImage == null) {
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Photo profil harus di isi",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {

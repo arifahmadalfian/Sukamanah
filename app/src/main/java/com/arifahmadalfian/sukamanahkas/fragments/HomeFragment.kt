@@ -9,6 +9,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -30,6 +31,8 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsClickListener {
 
@@ -86,11 +89,11 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 }
                 imageUser = "${data[5]}"
                 binding?.ivProfileHome?.load(imageUser) {
-                    placeholder(R.drawable.ic_placeholder)
-                    error(R.drawable.ic_placeholder)
+                    placeholder(R.mipmap.ic_launcher)
+                    error(R.mipmap.ic_launcher)
                     crossfade(true)
                     crossfade(400)
-                    transformations(RoundedCornersTransformation(10f))
+                    transformations(RoundedCornersTransformation(100f))
                 }
                 createBy = "${data[3]}"
                 admin = "${data[0]}"
@@ -159,6 +162,12 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             setHasFixedSize(true)
         }
 
+        binding?.swipeRefresh?.setColorSchemeColors(resources.getColor(R.color.design_default_color_error))
+        binding?.swipeRefresh?.setOnRefreshListener {
+            listKas.clear()
+            getDataKas()
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -185,6 +194,10 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             }
             homeAdapter.setUser(listKas)
             homeAdapter.notifyDataSetChanged()
+            lifecycleScope.launch {
+                delay(1500)
+                binding?.swipeRefresh?.isRefreshing = false
+            }
         }
     }
 

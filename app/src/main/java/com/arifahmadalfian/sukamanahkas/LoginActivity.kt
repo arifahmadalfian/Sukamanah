@@ -8,7 +8,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.TextUtils
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +44,22 @@ class LoginActivity : AppCompatActivity() {
         binding?.tvDaftar?.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
+        }
+
+        initView()
+    }
+
+    private fun initView() {
+        binding?.passwordHide?.setOnClickListener {
+            it.visibility = View.GONE
+            binding?.passwordShow?.visibility = View.VISIBLE
+            binding?.etPasswordLogin?.transformationMethod = HideReturnsTransformationMethod.getInstance()
+        }
+
+        binding?.passwordShow?.setOnClickListener {
+            it.visibility = View.GONE
+            binding?.passwordHide?.visibility = View.VISIBLE
+            binding?.etPasswordLogin?.transformationMethod = PasswordTransformationMethod.getInstance()
         }
     }
 

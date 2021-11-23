@@ -30,16 +30,16 @@ class HomeAdapter(
         fun bind(kas: Kas, action: IOnKasItemsClickListener){
             with(binding) {
                 ivProfile.load(kas.profile) {
-                    placeholder(R.drawable.ic_placeholder)
-                    error(R.drawable.ic_placeholder)
+                    placeholder(R.mipmap.ic_launcher)
+                    error(R.mipmap.ic_launcher)
                     crossfade(true)
                     crossfade(200)
                     transformations(RoundedCornersTransformation(30f))
                 }
                 tvName.text = kas.name.toCapitalize()
-                tvCreateAt.text = kas.createAt.toLong().epochToDateTime(HHDMY)
+                tvCreateAt.text = "by ${kas.createBy.toLowerCase()}"
                 tvInclusion.text = kas.inclusion
-                tvCreateBy.text = "by ${kas.createBy.toLowerCase()}"
+                tvCreateBy.text = kas.createAt.toLong().epochToDateTime(HHDMY)
             }
         }
     }
