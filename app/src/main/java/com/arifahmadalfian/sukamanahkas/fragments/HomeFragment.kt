@@ -88,13 +88,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                     ds.getValue(Any::class.java)?.let { data.add(it) }
                 }
                 imageUser = "${data[5]}"
-                binding?.ivProfileHome?.load(imageUser) {
-                    placeholder(R.mipmap.ic_launcher)
-                    error(R.mipmap.ic_launcher)
-                    crossfade(true)
-                    crossfade(400)
-                    transformations(RoundedCornersTransformation(100f))
-                }
+                binding?.ivProfileHome?.loadImage(imageUser, getProgressDrawable(requireContext()))
                 createBy = "${data[3]}"
                 admin = "${data[0]}"
                 /**

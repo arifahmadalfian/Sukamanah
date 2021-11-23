@@ -3,7 +3,12 @@ package com.arifahmadalfian.sukamanahkas.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.format.DateFormat
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.arifahmadalfian.sukamanahkas.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -60,6 +65,26 @@ fun Long.numberToCurrency(): String {
 
 fun showToast(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
+fun getProgressDrawable(context: Context): CircularProgressDrawable {
+    return CircularProgressDrawable(context).apply {
+        strokeWidth = 10f
+        centerRadius = 50f
+        start()
+    }
+}
+
+fun ImageView.loadImage(url: String?, progressDrawable: CircularProgressDrawable) {
+    val option = RequestOptions()
+        .placeholder(progressDrawable)
+        .error(R.mipmap.ic_launcher)
+
+    Glide.with(context)
+        .setDefaultRequestOptions(option)
+        .load(url)
+        .circleCrop()
+        .into(this)
 }
 
 // private fun showQrCode(attendanceCode: String) {
@@ -842,28 +867,4 @@ fun showToast(context: Context, message: String) {
 //     implementation 'com.google.zxing:core:3.3.0'
 //     implementation 'com.journeyapps:zxing-android-embedded:3.5.0@aar'
             
-            //Image circular loading
 
-//  holder.productImage.loadImage(
-//             item.product_images,
-//             getProgressDrawable(holder.productImage.context)
-//         )
-// fun getProgressDrawable(context: Context): CircularProgressDrawable {
-
-//     return CircularProgressDrawable(context).apply {
-//         strokeWidth = 10f
-//         centerRadius = 50f
-//         start()
-//     }
-// }
-
-// fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable) {
-//     val option = RequestOptions()
-//         .placeholder(progressDrawable)
-//         .error(R.drawable.img_error_wrong)
-
-//     Glide.with(context)
-//         .setDefaultRequestOptions(option)
-//         .load(uri)
-//         .into(this)
-// }
