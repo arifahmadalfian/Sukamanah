@@ -15,8 +15,14 @@
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_background_wishlist.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_bg.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_header.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_profile.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_recyclerview_pemasukan.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/circle_layout.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/circle_pemasukan.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/circle_pengeluaran.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/custom_button.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/custom_button_wishlist.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/gradientbackground.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/header_profile.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_add_black_24dp.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.2203125" />
@@ -25,14 +31,19 @@
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_print_24.xml" value="0.1" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_qr_code.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.11302083333333333" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_home.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_keyboard_arrow.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_menu.xml" value="0.1" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_nabung.xml" value="0.1125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_pemasukan.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_pengeluaran.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_person.xml" value="0.11302083333333333" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_person_black_24dp.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/ic_placeholder.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/input_field.xml" value="0.11302083333333333" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/login_layout.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/profil_layout.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/selector_item.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/state_list.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_login.xml" value="0.25" />
@@ -43,6 +54,7 @@
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_add.xml" value="0.20416666666666666" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_detail.xml" value="0.20416666666666666" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/layout_show_qr.xml" value="0.19972826086956522" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/layout_tambah_kas.xml" value="0.25" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/list_pemasukan.xml" value="0.33" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/menu/popup_menu.xml" value="0.20416666666666666" />

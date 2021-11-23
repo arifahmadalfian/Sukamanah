@@ -5,7 +5,10 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.*
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
@@ -21,6 +24,7 @@ import com.arifahmadalfian.sukamanahkas.Session
 import com.arifahmadalfian.sukamanahkas.data.model.Kas
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
+import com.arifahmadalfian.sukamanahkas.databinding.LayoutShowQrBinding
 import com.arifahmadalfian.sukamanahkas.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -33,6 +37,8 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsClickListener {
 
@@ -162,6 +168,10 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             getDataKas()
         }
 
+        binding?.btnShowQr?.setOnClickListener {
+            showBottomSheetQr()
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -248,10 +258,18 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     }
 
     private fun showBottomSheetAdd() {
-        val bottomSheet: com.arifahmadalfian.sukamanahkas.fragments.BottomSheetDialog = BottomSheetDialog(createBy)
+        val bottomSheet= BottomSheetDialog(createBy)
         fragmentManager?.let {
             setupFullHeight(requireView())
             bottomSheet.show(it, "bottomsheet")
+        }
+    }
+
+    private fun showBottomSheetQr() {
+        val bottomSheet= BottomSheetQr( mAuth.currentUser?.uid, createBy)
+        fragmentManager?.let {
+            setupFullHeight(requireView())
+            bottomSheet.show(it, "bottomsheetqr")
         }
     }
 
@@ -264,5 +282,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     override fun onKasItemClickListener(kas: Kas, position: Int) {
         Toast.makeText(requireContext(), "Coming soon", Toast.LENGTH_SHORT).show()
     }
+
+
 
 }
