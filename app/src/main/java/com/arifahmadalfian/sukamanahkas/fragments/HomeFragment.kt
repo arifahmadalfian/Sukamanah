@@ -5,10 +5,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.*
-import android.widget.Button
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
@@ -24,7 +21,6 @@ import com.arifahmadalfian.sukamanahkas.Session
 import com.arifahmadalfian.sukamanahkas.data.model.Kas
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
-import com.arifahmadalfian.sukamanahkas.databinding.LayoutShowQrBinding
 import com.arifahmadalfian.sukamanahkas.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -50,6 +46,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     private var createBy = ""
     private lateinit var homeAdapter: HomeAdapter
     private val listKas: ArrayList<Kas> = ArrayList()
+    private val totalKas: MutableList<Int> = mutableListOf()
 
     private lateinit var session: Session
     private lateinit var mAuth: FirebaseAuth
@@ -113,8 +110,8 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 /**
                  * pengambilan data firestore setelah pengambilan datastore beres
                  */
+                listKas.clear()
                 getDataKas()
-
                 /**
                  * setting name profile & isAdmin
                  */
@@ -126,17 +123,6 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
         }
         val imageProfile = mDatabase.reference.child("Users").child("$user")
         imageProfile.addListenerForSingleValueEvent(eventListener)
-
-        /**
-         * setting image null
-         */
-        binding?.ivProfileHome?.load("https://firebasestorage.googleapis.com/v0/b/sukamanah-ccbf0.appspot.com/o/images%2Fblue_image.png?alt=media&token=76aaf1c0-a04a-4365-a7e4-69cbf9986f40") {
-            placeholder(R.drawable.ic_placeholder)
-            error(R.drawable.ic_placeholder)
-            crossfade(true)
-            crossfade(400)
-            transformations(RoundedCornersTransformation(10f))
-        }
 
         binding?.fabAdd?.setOnClickListener {
             showBottomSheetAdd()
@@ -165,11 +151,16 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
         binding?.swipeRefresh?.setColorSchemeColors(resources.getColor(R.color.design_default_color_error))
         binding?.swipeRefresh?.setOnRefreshListener {
             listKas.clear()
+            totalKas.clear()
             getDataKas()
         }
 
         binding?.btnShowQr?.setOnClickListener {
             showBottomSheetQr()
+        }
+
+        binding?.btnPrint?.setOnClickListener {
+            getLaporanKas()
         }
 
     }
@@ -194,6 +185,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                         dc.document.get("profile").toString(),
                     )
                     listKas.add(kas)
+                    totalKas.add(dc.document.get("inclusion").toString().replace(".","").toInt())
                 }
             }
             homeAdapter.setUser(listKas)
@@ -283,6 +275,11 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
         Toast.makeText(requireContext(), "Coming soon", Toast.LENGTH_SHORT).show()
     }
 
-
+    private fun getLaporanKas() {
+        showToast(requireContext(), "Laporan Kas PDF")
+        PdfUtils(requireContext(), listKas.size, listKas, totalKas.sum()).also {
+            it.printThermal58()
+        }
+    }
 
 }
