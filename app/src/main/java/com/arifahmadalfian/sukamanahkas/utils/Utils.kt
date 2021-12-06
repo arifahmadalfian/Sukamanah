@@ -264,7 +264,36 @@ fun getBitmaps(drawableRes: Int, context: Context): Bitmap? {
 //         }
 
 
+// @SuppressLint("SetTextI18n")
+//     private fun showDateDialogPicker() {
+//         val builder = MaterialDatePicker.Builder.dateRangePicker()
+//         builder.setTheme(R.style.ThemeOverlay_MaterialComponents_MaterialCalendar)
+//         val picker = builder.build()
+//         picker.show(childFragmentManager, picker.toString())
+//         binding?.rvProductInventories?.pbLoading?.visibility = View.GONE
+//         picker.addOnCancelListener {
+//             picker.dismiss()
+//         }
 
+//         picker.addOnNegativeButtonClickListener {
+//             picker.dismiss()
+//         }
+
+//         picker.addOnPositiveButtonClickListener {
+//             if (it.first != null && it.second != null) {
+
+//                 currentStartDate = DateTimeUtils.epochToYMDDate(it.first!! / 1000)
+//                 currentEndDate = DateTimeUtils.epochToYMDDate(it.second!! / 1000)
+//                 getProductListAndRefresh()
+
+//                 val startDate = DateTimeUtils.epochToDMY(it.first!! / 1000)
+//                 val endDate = DateTimeUtils.epochToDMY(it.second!! / 1000)
+//                 binding?.tvtextDateTimeAndMonth?.text = "$startDate - $endDate"
+//                 binding?.rltextDateTimeAndMonth?.visibility = View.VISIBLE
+//             }
+//             picker.dismiss()
+//         }
+//     }
 
 
             
