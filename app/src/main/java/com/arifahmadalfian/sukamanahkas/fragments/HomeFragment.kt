@@ -35,6 +35,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+
+import android.util.DisplayMetrics
+
+
+
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsClickListener {
 

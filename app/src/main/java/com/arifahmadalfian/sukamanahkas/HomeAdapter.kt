@@ -12,6 +12,8 @@ import com.arifahmadalfian.sukamanahkas.utils.HDMY
 import com.arifahmadalfian.sukamanahkas.utils.HHDMY
 import com.arifahmadalfian.sukamanahkas.utils.epochToDateTime
 import com.arifahmadalfian.sukamanahkas.utils.toCapitalize
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeAdapter(
     private var clickListener: IOnKasItemsClickListener
@@ -37,7 +39,7 @@ class HomeAdapter(
                     transformations(RoundedCornersTransformation(30f))
                 }
                 tvName.text = kas.name.toCapitalize()
-                tvCreateAt.text = "by ${kas.createBy.toLowerCase()}"
+                tvCreateAt.text = "by ${kas.createBy.lowercase(Locale.getDefault())}"
                 tvInclusion.text = kas.inclusion
                 tvCreateBy.text = kas.createAt.toLong().epochToDateTime(HHDMY)
             }

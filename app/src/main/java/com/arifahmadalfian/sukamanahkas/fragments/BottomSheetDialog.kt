@@ -1,15 +1,16 @@
 package com.arifahmadalfian.sukamanahkas.fragments
 
+import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.FrameLayout
 import androidx.lifecycle.lifecycleScope
 import com.arifahmadalfian.sukamanahkas.R
 import com.arifahmadalfian.sukamanahkas.data.model.NotificationData
@@ -19,6 +20,7 @@ import com.arifahmadalfian.sukamanahkas.data.retrofit.RetrofitInstance
 import com.arifahmadalfian.sukamanahkas.databinding.LayoutTambahKasBinding
 import com.arifahmadalfian.sukamanahkas.utils.*
 import com.google.android.gms.tasks.Task
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,6 +30,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+
+import android.view.ViewGroup
+
+
+
+
+
+
 
 class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
 
@@ -53,6 +65,15 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dialog?.setOnShowListener { dialog ->
+            val d = dialog as BottomSheetDialog
+            val bottomSheet = d.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout
+            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBehavior.peekHeight = bottomSheet.height
+        }
+
         database = FirebaseDatabase.getInstance().getReference("Users")
         firestore = FirebaseFirestore.getInstance()
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
@@ -177,7 +198,7 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
         /**Add Firestore*/
         val kas: MutableMap<String, String> = mutableMapOf()
         kas["id"] = id
-        kas["name"] = "${users[0].namaUser}"
+        kas["name"] = "${users[0].namaUser?.toLowerCase()}"
         kas["profile"] = "${users[0].profileUser}"
         kas["inclusion"] = binding.etJumlah.text.toString()
         kas["createAt"] = todayTimeInMillis
@@ -186,7 +207,7 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
             /**Update database*/
             database.child(id).child("saldoTotal").setValue("$saldoAhir")
             PushNotification(
-                NotificationData("${users[0].namaUser?.toCapitalize()}", "Pembayaran kas ${binding.etJumlah.text.toString()}" ),
+                NotificationData("${users[0].namaUser?.toCapitalize()}", "Pembayaran kas ${binding.etJumlah.text}" ),
                 TOPIC
             ).also {
                 sendNotification(it)
@@ -216,5 +237,25 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
     }
+
+    override fun onStart() {
+        super.onStart()
+        val dialog: Dialog? = dialog
+        if (dialog != null) {
+            val bottomSheet: View = dialog.findViewById(R.id.design_bottom_sheet)
+            bottomSheet.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+        val view = view
+        view!!.post {
+            val parent = view.parent as View
+            val params =
+                parent.layoutParams as CoordinatorLayout.LayoutParams
+            val behavior = params.behavior
+            val bottomSheetBehavior = behavior as BottomSheetBehavior<*>?
+            bottomSheetBehavior!!.peekHeight = view.measuredHeight
+            parent.setBackgroundColor(Color.TRANSPARENT)
+        }
+    }
+
 
 }
