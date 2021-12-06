@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#25DADBDD"
     tools:context=".fragments.HomeFragment">
 
@@ -14,21 +13,21 @@
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="Profile"
         android:src="@drawable/profile_blank"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="Profile" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btnLogout"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/bg_logout"
+        android:contentDescription="Menu"
         android:src="@drawable/ic_menu"
         app:layout_constraintBottom_toBottomOf="@+id/ivProfileHome"
         app:layout_constraintEnd_toEndOf="@+id/search_container"
-        app:layout_constraintTop_toTopOf="@+id/ivProfileHome"
-        android:contentDescription="Menu" />
+        app:layout_constraintTop_toTopOf="@+id/ivProfileHome" />
 
     <ImageButton
         android:id="@+id/btnPrint"
@@ -36,12 +35,12 @@
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bg_logout"
+        android:contentDescription="Print"
         android:src="@drawable/ic_baseline_print_24"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/btnLogout"
         app:layout_constraintEnd_toStartOf="@+id/btnLogout"
-        app:layout_constraintTop_toTopOf="@+id/btnLogout"
-        android:contentDescription="Print" />
+        app:layout_constraintTop_toTopOf="@+id/btnLogout" />
 
     <ImageButton
         android:id="@+id/btnShowQr"
@@ -49,12 +48,12 @@
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bg_logout"
+        android:contentDescription="Qr Code"
         android:src="@drawable/ic_baseline_qr_code"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/btnLogout"
         app:layout_constraintEnd_toStartOf="@+id/btnLogout"
-        app:layout_constraintTop_toTopOf="@+id/btnLogout"
-        android:contentDescription="Qr Code" />
+        app:layout_constraintTop_toTopOf="@+id/btnLogout" />
 
     <TextView
         android:id="@+id/tvName"
@@ -90,30 +89,30 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:gravity="center_vertical"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
         app:endIconMode="clear_text"
         app:endIconTint="@color/biru"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfileHome"
         app:startIconDrawable="@drawable/ic_baseline_search_24"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        android:ems="10"
-        android:gravity="center_vertical"
         app:startIconTint="@color/biru">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_box"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Cari"
-            android:textColorHint="#9F000000"
-            android:textSize="18sp"
             android:background="@drawable/bg_search"
-            android:gravity="center_vertical"
             android:fontFamily="@font/product_sans_regular"
+            android:gravity="center_vertical"
+            android:hint="Cari"
             android:imeOptions="actionSearch"
             android:inputType="textPersonName"
+            android:textColorHint="#9F000000"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -123,12 +122,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
-        android:visibility="gone"
+        android:layout_marginBottom="32dp"
         android:background="@color/title_text_color"
         android:contentDescription="Tambah"
         android:src="@drawable/ic_add_black_24dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -138,8 +137,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:paddingTop="16dp"
         android:background="@drawable/card_background_pemasukan"
+        android:paddingTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -152,6 +151,15 @@
             tools:listitem="@layout/list_pemasukan" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include
+        android:id="@+id/empty_layout"
+        layout="@layout/layout_empty"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_container" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

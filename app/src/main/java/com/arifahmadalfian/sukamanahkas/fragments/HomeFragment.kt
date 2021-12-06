@@ -212,6 +212,13 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
 
                 }
             }
+            // cek ada data atau tidak
+            if (listKas.isEmpty()) {
+                binding?.swipeRefresh?.isRefreshing = false
+                binding?.emptyLayout?.root?.visibility = View.VISIBLE
+            } else {
+                binding?.emptyLayout?.root?.visibility = View.GONE
+            }
             homeAdapter.setUser(listKas)
             homeAdapter.notifyDataSetChanged()
             lifecycleScope.launch {
