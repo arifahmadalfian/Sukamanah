@@ -29,6 +29,7 @@ class HomeAdapter(
     }
 
     inner class UserViewHolder(private var binding: ListPemasukanBinding): RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(kas: Kas, action: IOnKasItemsClickListener){
             with(binding) {
                 ivProfile.load(kas.profile) {
@@ -38,10 +39,10 @@ class HomeAdapter(
                     crossfade(200)
                     transformations(RoundedCornersTransformation(30f))
                 }
-                tvName.text = kas.name.toCapitalize()
-                tvCreateAt.text = "by ${kas.createBy.lowercase(Locale.getDefault())}"
+                tvName.text = kas.name?.toCapitalize()
+                tvCreateAt.text = "by ${kas.createBy?.lowercase(Locale.getDefault())}"
                 tvInclusion.text = kas.inclusion
-                tvCreateBy.text = kas.createAt.toLong().epochToDateTime(HHDMY)
+                tvCreateBy.text = kas.createAt?.toLong()?.epochToDateTime(HHDMY)
             }
         }
     }

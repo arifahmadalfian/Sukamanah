@@ -246,7 +246,7 @@ class PdfUtils(
             kasTable1.deleteBodyRows()
             kasTable2.deleteBodyRows()
 
-            val namaCell = PdfPCell(Phrase(item.name.toCapitalize(), appFontRegularBold))
+            val namaCell = PdfPCell(Phrase(item.name?.toCapitalize(), appFontRegularBold))
             namaCell.border = Rectangle.NO_BORDER
             namaCell.horizontalAlignment = Rectangle.ALIGN_LEFT
             kasTable1.addCell(namaCell)
@@ -256,12 +256,12 @@ class PdfUtils(
             pemasukanCell.horizontalAlignment = Rectangle.ALIGN_RIGHT
             kasTable1.addCell(pemasukanCell)
 
-            val createAtCell = PdfPCell(Phrase(item.createAt.toLong().epochToDateTime(HHDMY), appFontSmalls))
+            val createAtCell = PdfPCell(Phrase(item.createAt?.toLong()?.epochToDateTime(HHDMY), appFontSmalls))
             createAtCell.border = Rectangle.NO_BORDER
             createAtCell.horizontalAlignment = Rectangle.ALIGN_LEFT
             kasTable2.addCell(createAtCell)
 
-            val createByCell = PdfPCell(Phrase("by ${item.createBy.lowercase()}",appFontSmalls))
+            val createByCell = PdfPCell(Phrase("by ${item.createBy?.lowercase()}",appFontSmalls))
             createByCell.horizontalAlignment = Rectangle.ALIGN_RIGHT
             createByCell.border = Rectangle.NO_BORDER
             kasTable2.addCell(createByCell)

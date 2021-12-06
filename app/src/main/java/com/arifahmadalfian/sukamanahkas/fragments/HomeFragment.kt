@@ -35,15 +35,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-
-import android.util.DisplayMetrics
-
-
-
+import com.google.android.material.datepicker.MaterialDatePicker
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsClickListener {
 
+    private var startDate: Long? = null
+    private var endDate: Long? = null
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
 
@@ -117,6 +114,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                  * pengambilan data firestore setelah pengambilan datastore beres
                  */
                 listKas.clear()
+                totalKas.clear()
                 getDataKas()
                 /**
                  * setting name profile & isAdmin
@@ -175,6 +173,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     private fun getDataKas() {
         FirebaseFirestore.getInstance().collection("Kas")
             .orderBy("createAt", Query.Direction.DESCENDING)
+            .limit(100L)
             .addSnapshotListener {value, error ->
             if (error != null) {
                 showToast(requireContext(), "Error")
@@ -182,16 +181,35 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             }
             for (dc: DocumentChange in value?.documentChanges!!) {
                 if (dc.type == DocumentChange.Type.ADDED) {
-                    val kas = Kas(
-                        dc.document.get("createAt").toString(),
-                        dc.document.get("createBy").toString(),
-                        dc.document.get("inclusion").toString(),
-                        dc.document.get("id").toString(),
-                        dc.document.get("name").toString(),
-                        dc.document.get("profile").toString(),
-                    )
-                    listKas.add(kas)
-                    totalKas.add(dc.document.get("inclusion").toString().replace(".","").toInt())
+                    var kas: Kas? = null
+                    //filter untuk data berdasarkan datetime/epoch
+                    if (startDate != null && endDate != null) {
+                        if (dc.document.get("createAt").toString().toLong() >= startDate!! &&
+                            dc.document.get("createAt").toString().toLong() <= endDate!!) {
+                            kas = Kas(
+                                dc.document.get("createAt").toString(),
+                                dc.document.get("createBy").toString(),
+                                dc.document.get("inclusion").toString(),
+                                dc.document.get("id").toString(),
+                                dc.document.get("name").toString(),
+                                dc.document.get("profile").toString(),
+                            )
+                            listKas.add(kas)
+                            totalKas.add(dc.document.get("inclusion").toString().replace(".","").toInt())
+                        }
+                    } else {
+                        kas = Kas(
+                            dc.document.get("createAt").toString(),
+                            dc.document.get("createBy").toString(),
+                            dc.document.get("inclusion").toString(),
+                            dc.document.get("id").toString(),
+                            dc.document.get("name").toString(),
+                            dc.document.get("profile").toString(),
+                        )
+                        listKas.add(kas)
+                        totalKas.add(dc.document.get("inclusion").toString().replace(".","").toInt())
+                    }
+
                 }
             }
             homeAdapter.setUser(listKas)
@@ -222,12 +240,12 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 Toast.makeText(requireContext(), "Hari ini", Toast.LENGTH_SHORT).show()
                 return true
             }
-            R.id.actionSortMinggu -> {
-                Toast.makeText(requireContext(), "1 Minggu", Toast.LENGTH_SHORT).show()
+            R.id.actionFilter -> {
+                showDateDialogPicker()
                 return true
             }
-            R.id.actionSortBulan -> {
-                Toast.makeText(requireContext(), "1 Bulan", Toast.LENGTH_SHORT).show()
+            R.id.actionProfile -> {
+                Toast.makeText(requireContext(), "Profile", Toast.LENGTH_SHORT).show()
                 return true
             }
             R.id.actionLogout -> {
@@ -285,6 +303,34 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
         showToast(requireContext(), "Laporan Kas PDF")
         PdfUtils(requireContext(), listKas.size, listKas, totalKas.sum()).also {
             it.printThermal58()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showDateDialogPicker() {
+        val builder = MaterialDatePicker.Builder.dateRangePicker()
+        builder.setTheme(R.style.ThemeOverlay_MaterialComponents_MaterialCalendar)
+        val picker = builder.build()
+        picker.show(childFragmentManager, picker.toString())
+        picker.addOnCancelListener {
+            picker.dismiss()
+        }
+        picker.addOnNegativeButtonClickListener {
+            picker.dismiss()
+        }
+        // 25200_000 timemillis = 7 jam -> 00:01
+        // 61200_000 timemillis = 17 jam -> 23:58
+        picker.addOnPositiveButtonClickListener { time ->
+            if (time.first != null && time.second != null) {
+                startDate = time.first - 25100000
+                endDate = time.second + 61100000
+                //loading
+                binding?.swipeRefresh?.isRefreshing = true
+                listKas.clear()
+                totalKas.clear()
+                getDataKas()
+            }
+            picker.dismiss()
         }
     }
 
