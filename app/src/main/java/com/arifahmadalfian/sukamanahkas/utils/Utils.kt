@@ -292,5 +292,27 @@ class ScanViewActivity: AppCompatActivity() {
     
     
     implementation 'com.github.bobekos:SimpleBarcodeScanner:1.0.23'
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!--  Gradient Bg for listrow -->
+    <gradient
+        android:startColor="#9715CB8C"
+        android:endColor="#0015cb8c"
+        android:angle="270" />
+</shape>
+    
+    <vector android:height="24dp" android:tint="#FFFFFF"
+    android:viewportHeight="24.0" android:viewportWidth="24.0"
+    android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#FF000000" android:pathData="M7,2v11h3v9l7,-12h-4l4,-8z"/>
+</vector>
+    
+    <vector android:height="24dp" android:tint="#FFFFFF"
+    android:viewportHeight="24.0" android:viewportWidth="24.0"
+    android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#FF000000" android:pathData="M3.27,3L2,4.27l5,5V13h3v9l3.58,-6.14L17.73,20 19,18.73 3.27,3zM17,10h-4l4,-8H7v2.18l8.46,8.46L17,10z"/>
+</vector>
             
 
