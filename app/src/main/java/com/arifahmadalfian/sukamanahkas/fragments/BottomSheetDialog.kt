@@ -35,12 +35,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 
 import android.view.ViewGroup
 
-
-
-
-
-
-
 class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
 
     private var _binding: LayoutTambahKasBinding? = null

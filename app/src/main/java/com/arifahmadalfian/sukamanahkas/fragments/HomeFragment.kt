@@ -19,7 +19,10 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.arifahmadalfian.sukamanahkas.*
 import com.arifahmadalfian.sukamanahkas.data.model.Kas
+import com.arifahmadalfian.sukamanahkas.data.model.NotificationData
+import com.arifahmadalfian.sukamanahkas.data.model.PushNotification
 import com.arifahmadalfian.sukamanahkas.data.model.User
+import com.arifahmadalfian.sukamanahkas.data.retrofit.RetrofitInstance
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
 import com.arifahmadalfian.sukamanahkas.utils.*
 import com.google.firebase.auth.FirebaseAuth
@@ -36,10 +39,15 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.gson.Gson
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsClickListener {
+
+    val TAG = "MainActivity"
 
     private var startDate: Long? = null
     private var endDate: Long? = null
@@ -52,17 +60,13 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     private lateinit var homeAdapter: HomeAdapter
     private val listKas: ArrayList<Kas> = ArrayList()
     private val totalKas: MutableList<Int> = mutableListOf()
+    private val users = ArrayList<User>()
 
     private lateinit var session: Session
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabase: FirebaseDatabase
 
     private var isPrint = true
-
-    companion object{
-        const val SCAN_MEMBER = 100
-        const val RESULT_SCAN = "result_scan"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -181,20 +185,6 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             getLaporanKas()
         }
 
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (requestCode == IntentIntegrator.REQUEST_CODE) {
-            if (result != null) {
-                if (result.contents == null) {
-                    Log.d("ScanFrag", "Cancelled scan")
-                    Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
-                } else {
-                    Log.d("ScanFrag", "Scanned | " + result.contents)
-                }
-            }
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -378,6 +368,99 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 getDataKas()
             }
             picker.dismiss()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (requestCode == IntentIntegrator.REQUEST_CODE) {
+            if (result != null) {
+                if (result.contents == null) {
+                    Log.d("ScanFrag", "Cancelled scan")
+                    Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
+                } else {
+                    Log.d("ScanFrag", "Scanned | " + result.contents)
+                    binding?.swipeRefresh?.isRefreshing = true
+                    searchUser(result.contents)
+                    listKas.clear()
+                    totalKas.clear()
+                    getDataKas()
+                    homeAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
+    private fun searchUser(idUser: String) {
+        val query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("id").equalTo(idUser)
+        query.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    users.clear()
+                    for (data in snapshot.children) {
+                        val user = User(
+                            data.child("admin").getValue(String::class.java)!!,
+                            data.child("emailUser").getValue(String::class.java),
+                            data.child("id").getValue(String::class.java),
+                            data.child("namaUser").getValue(String::class.java),
+                            data.child("passUser").getValue(String::class.java),
+                            data.child("profileUser").getValue(String::class.java),
+                            data.child("profileUserUid").getValue(String::class.java),
+                            data.child("saldoPemasukan").getValue(String::class.java),
+                            data.child("saldoTotal").getValue(String::class.java)
+                        )
+                        users.add(user)
+                        Log.d("ScanFrag", "$users")
+                    }
+                    if (users.isNotEmpty()) {
+                        addFirestore()
+                    }
+                } else {
+                    Log.d("Search user", "Erorr")
+                }
+            }
+            override fun onCancelled(error: DatabaseError) { }
+        })
+    }
+
+    private fun addFirestore() {
+        val saldo = "${users[0].saldoTotal}"
+        val saldoAhir = saldo.toInt() + 2000
+        val id = "${users[0].id}"
+
+        /**Add Firestore*/
+        val kas: MutableMap<String, String> = mutableMapOf()
+        kas["id"] = id
+        kas["name"] = "${users[0].namaUser?.lowercase(Locale.getDefault())}"
+        kas["profile"] = "${users[0].profileUser}"
+        kas["inclusion"] = "2.000"
+        kas["createAt"] = todayTimeInMillis
+        kas["createBy"] = createBy
+        FirebaseFirestore.getInstance().collection("Kas").add(kas).addOnSuccessListener {
+            /**Update database*/
+            FirebaseDatabase.getInstance().getReference("Users").child(id).child("saldoTotal").setValue("$saldoAhir")
+            PushNotification(
+                NotificationData("${users[0].namaUser?.toCapitalize()}", "Pembayaran kas 2.000" ),
+                TOPIC
+            ).also {
+                sendNotification(it)
+            }
+            showToast(requireContext(), "Berhasil")
+        }.addOnFailureListener {
+            showToast(requireContext(), "Gagal")
+        }
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e(TAG, response.errorBody().toString())
+            }
+        } catch(e: Exception) {
+            Log.e(TAG, e.toString())
         }
     }
 
