@@ -1,10 +1,13 @@
 package com.arifahmadalfian.sukamanahkas.fragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -14,10 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.RoundedCornersTransformation
-import com.arifahmadalfian.sukamanahkas.HomeAdapter
-import com.arifahmadalfian.sukamanahkas.IOnKasItemsClickListener
-import com.arifahmadalfian.sukamanahkas.R
-import com.arifahmadalfian.sukamanahkas.Session
+import com.arifahmadalfian.sukamanahkas.*
 import com.arifahmadalfian.sukamanahkas.data.model.Kas
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
@@ -36,6 +36,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.integration.android.IntentResult
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsClickListener {
 
@@ -54,6 +56,13 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     private lateinit var session: Session
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabase: FirebaseDatabase
+
+    private var isPrint = true
+
+    companion object{
+        const val SCAN_MEMBER = 100
+        const val RESULT_SCAN = "result_scan"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -133,7 +142,12 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
         }
 
         binding?.fabAdd?.setOnLongClickListener {
-            showToast(requireContext(), "Coming Soon")
+            val integrator = IntentIntegrator.forSupportFragment(this@HomeFragment)
+            integrator.captureActivity = ScanViewActivity::class.java
+            integrator.setOrientationLocked(false)
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
+            integrator.setPrompt("Scanning...")
+            integrator.initiateScan()
             true
         }
 
@@ -167,6 +181,20 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             getLaporanKas()
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (requestCode == IntentIntegrator.REQUEST_CODE) {
+            if (result != null) {
+                if (result.contents == null) {
+                    Log.d("ScanFrag", "Cancelled scan")
+                    Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
+                } else {
+                    Log.d("ScanFrag", "Scanned | " + result.contents)
+                }
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -216,8 +244,10 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             if (listKas.isEmpty()) {
                 binding?.swipeRefresh?.isRefreshing = false
                 binding?.emptyLayout?.root?.visibility = View.VISIBLE
+                isPrint = false
             } else {
                 binding?.emptyLayout?.root?.visibility = View.GONE
+                isPrint = true
             }
             homeAdapter.setUser(listKas)
             homeAdapter.notifyDataSetChanged()
@@ -243,8 +273,13 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.actionSortHariIni -> {
-                Toast.makeText(requireContext(), "Hari ini", Toast.LENGTH_SHORT).show()
+            R.id.actionSemua -> {
+                startDate = null
+                endDate = null
+                binding?.swipeRefresh?.isRefreshing = true
+                listKas.clear()
+                totalKas.clear()
+                getDataKas()
                 return true
             }
             R.id.actionFilter -> {
@@ -307,10 +342,15 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     }
 
     private fun getLaporanKas() {
-        showToast(requireContext(), "Laporan Kas PDF")
-        PdfUtils(requireContext(), listKas.size, listKas, totalKas.sum()).also {
-            it.printThermal58()
+        if (isPrint) {
+            showToast(requireContext(), "Laporan Kas PDF")
+            PdfUtils(requireContext(), listKas.size, listKas, totalKas.sum()).also {
+                it.printThermal58()
+            }
+        } else {
+            showToast(requireContext(), "Kosong Bray")
         }
+
     }
 
     @SuppressLint("SetTextI18n")

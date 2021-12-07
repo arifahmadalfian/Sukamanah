@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/actionSortHariIni"
-        android:title="Hari Ini"/>
+    <item android:id="@+id/actionSemua"
+        android:title="Semua"/>
 
     <item android:id="@+id/actionFilter"
         android:title="Filter"/>

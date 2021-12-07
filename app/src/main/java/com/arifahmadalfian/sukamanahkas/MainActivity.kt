@@ -8,6 +8,10 @@ import androidx.navigation.fragment.NavHostFragment
 import com.arifahmadalfian.sukamanahkas.databinding.ActivityMainBinding
 import com.arifahmadalfian.sukamanahkas.utils.TOPIC
 import com.google.firebase.messaging.FirebaseMessaging
+import android.content.Intent
+
+
+
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -30,6 +34,11 @@ class MainActivity : AppCompatActivity() {
 
         Navigation.findNavController(this, R.id.container)
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // This is important, otherwise the result will not be passed to the fragment
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onBackPressed() {

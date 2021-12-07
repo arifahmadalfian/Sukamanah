@@ -6,60 +6,67 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
-        android:theme="@style/AppTheme">
-        <service android:name=".utils.FirebaseService"
-            android:permission="com.google.android.c2dm.permission.SEND"
-            android:exported="true">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ScanViewActivity"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <service
+            android:name=".utils.FirebaseService"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
-
         </service>
+
         <activity
-            android:name="com.arifahmadalfian.sukamanahkas.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name="com.arifahmadalfian.sukamanahkas.RegisterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"
-            android:label="Daftar">
-        </activity>
-        <activity
-            android:name="com.arifahmadalfian.sukamanahkas.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"
-            android:label="Main">
-        </activity>
-        <activity
-            android:name="com.arifahmadalfian.sukamanahkas.SplashscreenActivity"
+            android:name=".LoginActivity"
             android:exported="true"
-            android:theme="@style/AppTheme2"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="Daftar"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"/>
+        <activity
+            android:name=".MainActivity"
+            android:label="Main"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"/>
+        <activity
+            android:name=".SplashscreenActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.arifahmadalfian.sukamanahkas.provider"
@@ -69,8 +76,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-
-
     </application>
 
 </manifest>
