@@ -62,6 +62,7 @@ class HomeAdapter(
 }
 
 interface IOnKasItemsClickListener {
+
     fun onKasItemClickListener(kas: Kas, position: Int)
 }
 

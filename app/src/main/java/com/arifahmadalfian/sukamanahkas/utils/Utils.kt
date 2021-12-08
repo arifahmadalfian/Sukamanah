@@ -20,6 +20,10 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import org.apache.commons.text.WordUtils
+import android.app.Activity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+
 
 const val DAY = "EEEE"
 const val HOURS = "HH:mm"
@@ -124,6 +128,16 @@ fun hasPermissions(
         }
     }
     return true
+}
+
+fun hideKeyboard(activity: Activity) {
+    val imm: InputMethodManager =
+        activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view: View? = activity.currentFocus
+    if (view == null) {
+        view = View(activity)
+    }
+    imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
 }
 
 

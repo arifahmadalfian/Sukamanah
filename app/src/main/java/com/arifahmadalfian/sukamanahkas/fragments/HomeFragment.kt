@@ -9,6 +9,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.arifahmadalfian.sukamanahkas.*
+import com.arifahmadalfian.sukamanahkas.R
 import com.arifahmadalfian.sukamanahkas.data.model.Kas
 import com.arifahmadalfian.sukamanahkas.data.model.NotificationData
 import com.arifahmadalfian.sukamanahkas.data.model.PushNotification
@@ -26,10 +30,6 @@ import com.arifahmadalfian.sukamanahkas.data.retrofit.RetrofitInstance
 import com.arifahmadalfian.sukamanahkas.databinding.FragmentHomeBinding
 import com.arifahmadalfian.sukamanahkas.utils.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -39,6 +39,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.database.*
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.gson.Gson
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
@@ -61,10 +63,13 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     private val listKas: ArrayList<Kas> = ArrayList()
     private val totalKas: MutableList<Int> = mutableListOf()
     private val users = ArrayList<User>()
+    private lateinit var search: AutoCompleteTextView
+    private val searchUsers = ArrayList<User>()
 
     private lateinit var session: Session
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabase: FirebaseDatabase
+    private lateinit var database: DatabaseReference
 
     private var isPrint = true
 
@@ -81,12 +86,70 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
         session = Session(requireContext())
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
+        database = FirebaseDatabase.getInstance().getReference("Users")
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
         userData = User()
         binding?.btnLogout?.setOnClickListener {
             showPopupMenu(it)
         }
+        // pencarian list users dengan autocomplete
+        search = binding?.searchContainer!!
+        val event = object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                getSearch(snapshot)
+            }
+            override fun onCancelled(error: DatabaseError) { }
+        }
+        database.addListenerForSingleValueEvent(event)
         initView()
+    }
+
+    private fun getSearch(snapshot: DataSnapshot) {
+        val names = ArrayList<String>()
+        if (snapshot.exists()) {
+            for (data in snapshot.children) {
+                val name = data.child("namaUser").getValue(String::class.java)
+                if (name != null) {
+                    names.add(name)
+                }
+            }
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, names)
+            search.setAdapter(adapter)
+            search.onItemClickListener = AdapterView.OnItemClickListener { p0, p1, p2, p3 ->
+                searchListNameUser(binding?.searchContainer?.text.toString())
+                Log.d("Search user", "Berhasil")
+            }
+        } else {
+            Log.d("Search user", "Erorr")
+        }
+    }
+
+    private fun searchListNameUser(dataUser: String) {
+        val query = database.orderByChild("namaUser").equalTo(dataUser)
+        query.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    users.clear()
+                    for (data in snapshot.children) {
+                        val user = User(
+                            data.child("admin").getValue(String::class.java)!!,
+                            data.child("emailUser").getValue(String::class.java),
+                            data.child("id").getValue(String::class.java),
+                            data.child("namaUser").getValue(String::class.java),
+                            data.child("passUser").getValue(String::class.java),
+                            data.child("profileUser").getValue(String::class.java),
+                            data.child("profileUserUid").getValue(String::class.java),
+                            data.child("saldoPemasukan").getValue(String::class.java),
+                            data.child("saldoTotal").getValue(String::class.java)
+                        )
+                        users.add(user)
+                    }
+                } else {
+                    Log.d("Search user", "Erorr")
+                }
+            }
+            override fun onCancelled(error: DatabaseError) { }
+        })
     }
 
     private fun initView() {
@@ -185,6 +248,28 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             getLaporanKas()
         }
 
+        binding?.btnSearch?.setOnClickListener {
+            binding?.searchContainer?.clearFocus()
+            hideKeyboard(requireActivity())
+            if (binding?.searchContainer?.text != null || binding?.searchContainer?.text.toString() != "") {
+                getDataKasByName(binding?.searchContainer?.text.toString().toCapitalize())
+            }
+        }
+    }
+
+    private fun getDataKasByName(name: String) {
+        binding?.swipeRefresh?.isRefreshing = true
+        FirebaseFirestore.getInstance().collection("Kas").whereEqualTo("name", name)
+            .get()
+            .addOnSuccessListener { value ->
+                listKas.clear()
+                totalKas.clear()
+                getQuerySnapshot(value)
+            }
+            .addOnFailureListener{
+                showToast(requireContext(), "Gagal Mencari Data")
+            }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -197,25 +282,19 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 showToast(requireContext(), "Error")
                 return@addSnapshotListener
             }
-            for (dc: DocumentChange in value?.documentChanges!!) {
-                if (dc.type == DocumentChange.Type.ADDED) {
-                    var kas: Kas? = null
-                    //filter untuk data berdasarkan datetime/epoch
-                    if (startDate != null && endDate != null) {
-                        if (dc.document.get("createAt").toString().toLong() >= startDate!! &&
-                            dc.document.get("createAt").toString().toLong() <= endDate!!) {
-                            kas = Kas(
-                                dc.document.get("createAt").toString(),
-                                dc.document.get("createBy").toString(),
-                                dc.document.get("inclusion").toString(),
-                                dc.document.get("id").toString(),
-                                dc.document.get("name").toString(),
-                                dc.document.get("profile").toString(),
-                            )
-                            listKas.add(kas)
-                            totalKas.add(dc.document.get("inclusion").toString().replace(".","").toInt())
-                        }
-                    } else {
+            getQuerySnapshot(value)
+
+            }
+    }
+
+    private fun getQuerySnapshot(value: QuerySnapshot?) {
+        for (dc: DocumentChange in value?.documentChanges!!) {
+            if (dc.type == DocumentChange.Type.ADDED) {
+                var kas: Kas? = null
+                //filter untuk data berdasarkan datetime/epoch
+                if (startDate != null && endDate != null) {
+                    if (dc.document.get("createAt").toString().toLong() >= startDate!! &&
+                        dc.document.get("createAt").toString().toLong() <= endDate!!) {
                         kas = Kas(
                             dc.document.get("createAt").toString(),
                             dc.document.get("createBy").toString(),
@@ -227,24 +306,35 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                         listKas.add(kas)
                         totalKas.add(dc.document.get("inclusion").toString().replace(".","").toInt())
                     }
-
+                } else {
+                    kas = Kas(
+                        dc.document.get("createAt").toString(),
+                        dc.document.get("createBy").toString(),
+                        dc.document.get("inclusion").toString(),
+                        dc.document.get("id").toString(),
+                        dc.document.get("name").toString(),
+                        dc.document.get("profile").toString(),
+                    )
+                    listKas.add(kas)
+                    totalKas.add(dc.document.get("inclusion").toString().replace(".","").toInt())
                 }
+
             }
-            // cek ada data atau tidak
-            if (listKas.isEmpty()) {
-                binding?.swipeRefresh?.isRefreshing = false
-                binding?.emptyLayout?.root?.visibility = View.VISIBLE
-                isPrint = false
-            } else {
-                binding?.emptyLayout?.root?.visibility = View.GONE
-                isPrint = true
-            }
-            homeAdapter.setUser(listKas)
-            homeAdapter.notifyDataSetChanged()
-            lifecycleScope.launch {
-                delay(1500)
-                binding?.swipeRefresh?.isRefreshing = false
-            }
+        }
+        // cek ada data atau tidak
+        if (listKas.isEmpty()) {
+            binding?.swipeRefresh?.isRefreshing = false
+            binding?.emptyLayout?.visibility = View.VISIBLE
+            isPrint = false
+        } else {
+            binding?.emptyLayout?.visibility = View.GONE
+            isPrint = true
+        }
+        homeAdapter.setUser(listKas)
+        homeAdapter.notifyDataSetChanged()
+        lifecycleScope.launch {
+            delay(1500)
+            binding?.swipeRefresh?.isRefreshing = false
         }
     }
 

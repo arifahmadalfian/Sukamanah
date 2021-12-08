@@ -192,7 +192,7 @@ class BottomSheetDialog(val createBy: String) : BottomSheetDialogFragment() {
         /**Add Firestore*/
         val kas: MutableMap<String, String> = mutableMapOf()
         kas["id"] = id
-        kas["name"] = "${users[0].namaUser?.toLowerCase()}"
+        kas["name"] = "${users[0].namaUser?.toCapitalize()}"
         kas["profile"] = "${users[0].profileUser}"
         kas["inclusion"] = binding.etJumlah.text.toString()
         kas["createAt"] = todayTimeInMillis
