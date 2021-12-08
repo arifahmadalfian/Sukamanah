@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.arifahmadalfian.sukamanahkas.data.model.User
 import com.arifahmadalfian.sukamanahkas.databinding.ActivityRegisterBinding
+import com.arifahmadalfian.sukamanahkas.utils.toCapitalize
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
@@ -197,7 +198,7 @@ class RegisterActivity : AppCompatActivity() {
             admin = "false",
             emailUser = email,
             id = uid,
-            namaUser = namalengkap,
+            namaUser = namalengkap?.toCapitalize(),
             passUser = password,
             profileUser= "$image",
             profileUserUid = "$uuid",

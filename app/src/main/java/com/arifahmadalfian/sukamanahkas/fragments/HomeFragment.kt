@@ -46,6 +46,11 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import android.view.inputmethod.EditorInfo
+
+import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
+
 
 class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsClickListener {
 
@@ -64,7 +69,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     private val totalKas: MutableList<Int> = mutableListOf()
     private val users = ArrayList<User>()
     private lateinit var search: AutoCompleteTextView
-    private val searchUsers = ArrayList<User>()
+    private var searchUsers: String? = null
 
     private lateinit var session: Session
     private lateinit var mAuth: FirebaseAuth
@@ -237,7 +242,11 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
         binding?.swipeRefresh?.setOnRefreshListener {
             listKas.clear()
             totalKas.clear()
-            getDataKas()
+            if (searchUsers != null) {
+                getDataKasByName()
+            } else {
+                getDataKas()
+            }
         }
 
         binding?.btnShowQr?.setOnClickListener {
@@ -252,18 +261,33 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
             binding?.searchContainer?.clearFocus()
             hideKeyboard(requireActivity())
             if (binding?.searchContainer?.text != null || binding?.searchContainer?.text.toString() != "") {
-                getDataKasByName(binding?.searchContainer?.text.toString().toCapitalize())
+                searchUsers = binding?.searchContainer?.text.toString().toCapitalize()
+                getDataKasByName()
             }
         }
+
+        binding?.searchContainer?.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding?.searchContainer?.clearFocus()
+                hideKeyboard(requireActivity())
+                if (binding?.searchContainer?.text != null || binding?.searchContainer?.text.toString() != "") {
+                    searchUsers = binding?.searchContainer?.text.toString().toCapitalize()
+                    getDataKasByName()
+                }
+                return@OnEditorActionListener true
+            }
+            false
+        })
     }
 
-    private fun getDataKasByName(name: String) {
+    private fun getDataKasByName() {
         binding?.swipeRefresh?.isRefreshing = true
-        FirebaseFirestore.getInstance().collection("Kas").whereEqualTo("name", name)
+        FirebaseFirestore.getInstance().collection("Kas").whereEqualTo("name", searchUsers)
             .get()
             .addOnSuccessListener { value ->
                 listKas.clear()
                 totalKas.clear()
+                binding?.searchContainer?.setText("")
                 getQuerySnapshot(value)
             }
             .addOnFailureListener{
@@ -455,7 +479,11 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 binding?.swipeRefresh?.isRefreshing = true
                 listKas.clear()
                 totalKas.clear()
-                getDataKas()
+                if (searchUsers != null) {
+                    getDataKasByName()
+                } else {
+                    getDataKas()
+                }
             }
             picker.dismiss()
         }
