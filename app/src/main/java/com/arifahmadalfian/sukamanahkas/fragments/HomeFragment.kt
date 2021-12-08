@@ -93,7 +93,6 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
         mDatabase = FirebaseDatabase.getInstance()
         database = FirebaseDatabase.getInstance().getReference("Users")
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
-        userData = User()
         binding?.btnLogout?.setOnClickListener {
             showPopupMenu(it)
         }
@@ -178,6 +177,18 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 binding?.ivProfileHome?.loadImage(imageUser, getProgressDrawable(requireContext()))
                 createBy = "${data[3]}"
                 admin = "${data[0]}"
+                //data di kirimkan dengan intent ke activity detail
+                userData = User(
+                    admin = "${data[0]}",
+                    emailUser = null,
+                    id = "${data[2]}",
+                    namaUser = "${data[3]}",
+                    passUser = null,
+                    profileUser = "${data[5]}",
+                    profileUserUid = "${data[6]}",
+                    saldoPemasukan = null,
+                    saldoTotal = "${data[8]}"
+                )
                 /**
                  * hak akses admin untuk menambahkan data
                  */
@@ -383,6 +394,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 binding?.swipeRefresh?.isRefreshing = true
                 listKas.clear()
                 totalKas.clear()
+                searchUsers = null
                 getDataKas()
                 return true
             }
@@ -391,7 +403,9 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 return true
             }
             R.id.actionProfile -> {
-                Toast.makeText(requireContext(), "Profile", Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireActivity(), DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_PERSON, userData)
+                startActivity(intent)
                 return true
             }
             R.id.actionLogout -> {

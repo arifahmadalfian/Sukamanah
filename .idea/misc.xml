@@ -12,6 +12,7 @@
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/bt_tabung_universal.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/button_selector.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_background_pemasukan.xml" value="0.2203125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_background_pemasukan_detail.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_background_pengeluaran.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_background_wishlist.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/card_bg.xml" value="0.2203125" />
@@ -56,6 +57,7 @@
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/profil_layout.xml" value="0.2203125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/selector_item.xml" value="0.1125" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/drawable/state_list.xml" value="0.1125" />
+        <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_detail.xml" value="0.25" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Firebase/sukamanah/app/src/main/res/layout/activity_register.xml" value="0.18206521739130435" />
