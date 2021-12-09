@@ -13,7 +13,7 @@
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="6dp"
-        android:background="@drawable/card_recyclerview_pemasukan"
+        android:background="@drawable/card_recyclerview"
         app:cardElevation="2dp"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
