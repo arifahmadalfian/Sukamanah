@@ -78,8 +78,9 @@ class DetailActivity : AppCompatActivity(), IOnKasItemsClickListener,
     @SuppressLint("SetTextI18n")
     private fun initView() {
         binding.btnBackDetail.setOnClickListener {
-            startActivity(Intent(this@DetailActivity, MainActivity::class.java))
-            finish()
+            val intent = Intent(this@DetailActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
         }
         binding.tvNameDetail.text = userData.namaUser?.toCapitalize()
         binding.tvInclusion.text = "Rp ${userData.saldoTotal?.toLong()?.numberToCurrency()}"
@@ -157,8 +158,9 @@ class DetailActivity : AppCompatActivity(), IOnKasItemsClickListener,
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this@DetailActivity, MainActivity::class.java))
-        finish()
+        val intent = Intent(this@DetailActivity, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
     }
 
     override fun onKasItemClickListener(kas: Kas, position: Int) {
@@ -169,8 +171,8 @@ class DetailActivity : AppCompatActivity(), IOnKasItemsClickListener,
        when (item?.itemId) {
            R.id.actionSetting -> {
                AlertDialog.Builder(this@DetailActivity)
-                   .setTitle("Ganti Photo Profile")
-                   .setMessage("Yakin ingin mengganti profile!")
+                   .setTitle("Ganti Profile")
+                   .setMessage("Yakin ingin mengganti poto profile!")
                    .setPositiveButton("OK") { _, _ ->
                        updateProfile()
                    }
