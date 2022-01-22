@@ -311,13 +311,27 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
     private fun getDataKas() {
         FirebaseFirestore.getInstance().collection("Kas")
             .orderBy("createAt", Query.Direction.DESCENDING)
-            .limit(100L)
+            .limit(60L)
             .addSnapshotListener {value, error ->
             if (error != null) {
                 showToast(requireContext(), "Error")
                 return@addSnapshotListener
             }
             getQuerySnapshot(value)
+
+            }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getDataKasFull() {
+        FirebaseFirestore.getInstance().collection("Kas")
+            .orderBy("createAt", Query.Direction.DESCENDING)
+            .addSnapshotListener {value, error ->
+                if (error != null) {
+                    showToast(requireContext(), "Error")
+                    return@addSnapshotListener
+                }
+                getQuerySnapshot(value)
 
             }
     }
@@ -496,7 +510,7 @@ class HomeFragment : Fragment(), PopupMenu.OnMenuItemClickListener, IOnKasItemsC
                 if (searchUsers != null) {
                     getDataKasByName()
                 } else {
-                    getDataKas()
+                    getDataKasFull()
                 }
             }
             picker.dismiss()
