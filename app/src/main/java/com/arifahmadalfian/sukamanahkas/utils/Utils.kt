@@ -191,5 +191,28 @@ fun hideKeyboard(activity: Activity) {
 //         } else {
 //             holder.tvDuration.text = "-"
 //         }
-            
 
+
+// // EvenBus coroutine
+//     implementation 'com.github.Kosert.FlowBus:FlowBus:1.1'
+//     implementation 'com.github.Kosert.FlowBus:FlowBus-android:1.1'
+            
+//  override fun onStart() {
+//         super.onStart()
+//         //Subscriber FlowBus
+//         EventsReceiver().bindLifecycle(this)
+//             .subscribe { event: Count ->
+//                 tab_history.getTabAt(0)?.let { tab ->
+//                     with(tab){
+//                         orCreateBadge.number = event.count
+//                         badge?.horizontalOffset = -18
+//                         badge?.verticalOffset= +14
+//                         badge?.backgroundColor = resources.getColor(R.color.blue_picklist_color)
+//                         badge?.maxCharacterCount = 3
+//                     }
+//                 }
+//             }
+//     }
+
+// Publisher FlowBus
+// GlobalBus.post(Count(11))
