@@ -140,7 +140,56 @@ fun hideKeyboard(activity: Activity) {
     imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
 }
 
+// fun getTodayInTime(): Long {
+//         val calendar = Calendar.getInstance()
+//         return calendar.time.time
+//     }
 
 
+// val timeMax = listItem[position].time_max_proccess
+//         if (timeMax != null) {
+//             val currentDayEpoch = DateTimeUtils.getTodayInTime()
+//             val startCalendar = Calendar.getInstance()
+//             startCalendar.timeInMillis = currentDayEpoch
+//             val endCalendar = Calendar.getInstance()
+//             endCalendar.timeInMillis = timeMax * 1000L
+
+//             val startMillis = startCalendar.timeInMillis //get the start time in milliseconds
+//             val endMillis = endCalendar.timeInMillis //get the end time in milliseconds
+//             val totalMillis = endMillis - startMillis
+
+//             if (holder.timer != null) {
+//                 holder.timer!!.cancel()
+//             }
+
+//             holder.timer = object : CountDownTimer(totalMillis, 1000) {
+//                 override fun onFinish() {
+//                     val timeDuration = "Transaction Expired"
+//                     holder.tvDuration.text = timeDuration
+//                 }
+
+//                 override fun onTick(untilFinished: Long) {
+//                     var duration = untilFinished
+//                     val d = TimeUnit.MILLISECONDS.toDays(duration)
+//                     duration -= TimeUnit.DAYS.toMillis(d)
+
+//                     val h = TimeUnit.MILLISECONDS.toHours(duration)
+//                     duration -= TimeUnit.HOURS.toMillis(h)
+
+//                     val m = TimeUnit.MILLISECONDS.toMinutes(duration)
+//                     duration -= TimeUnit.MINUTES.toMillis(m)
+
+//                     val s = TimeUnit.MILLISECONDS.toSeconds(duration)
+
+//                     holder.tvDuration.text = String.format(
+//                         Locale.getDefault(),
+//                         "%02d : %02d : %02d : %02d",
+//                         d, h, m, s
+//                     )
+//                 }
+//             }.start()
+//         } else {
+//             holder.tvDuration.text = "-"
+//         }
             
 
